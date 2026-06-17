@@ -6,8 +6,11 @@ import card1 from "../images/card1.png";
 import card2 from "../images/card2.png";
 import card3 from "../images/card3.png";
 import card4 from "../images/card4.png";
-import card4 from "../images/card5.png";
-import card4 from "../images/card6.png";
+import card5 from "../images/card5.png";
+import card6 from "../images/card6.png";
+import Footer from "../components/Footer";
+
+
 
 const Home = () => {
 
@@ -151,8 +154,84 @@ const Home = () => {
         </div>
 
       </section>
-  
-      
+      <section className="project-section">
+  <div className="container">
+    <div className="row justify-content-center text-center">
+      <div className="col-lg-8">
+        <h2 className="project-title">Start a Project</h2>
+
+        <p className="project-text">
+          Do you have a business growth objective you'd like to achieve?
+          Are you ready to find out how <strong>BazazTech</strong> can help
+          build your business online? If so, make contact with us today...
+        </p>
+
+        <button className="btn project-btn">
+          Get A Quote
+        </button>
+      </div>
+    </div>
+  </div>
+</section>
+<section className="winning-section">
+  <div className="container">
+
+    <div className="row justify-content-center text-center">
+      <div className="col-lg-8">
+        <h2 className="winning-title">
+          Have A Look On Our Winning Deeds
+        </h2>
+
+        <p className="winning-desc">
+          Our success is anchored by our skilled team, extensive experience,
+          in-depth technical understanding, focused goal setting, and the
+          positive impact we have on our diverse customer base through their satisfaction.
+        </p>
+      </div>
+    </div>
+
+    <div className="row g-4 mt-4 justify-content-center">
+
+      <div className="col-6 col-md-4 col-lg-2">
+        <div className="stat-box">
+          <h3>10+</h3>
+          <span>Industries Served</span>
+        </div>
+      </div>
+
+      <div className="col-6 col-md-4 col-lg-2">
+        <div className="stat-box">
+          <h3>100+</h3>
+          <span>Projects Delivered</span>
+        </div>
+      </div>
+
+      <div className="col-6 col-md-4 col-lg-2">
+        <div className="stat-box">
+          <h3>100%</h3>
+          <span>Client Satisfaction</span>
+        </div>
+      </div>
+
+      <div className="col-6 col-md-4 col-lg-2">
+        <div className="stat-box">
+          <h3>50+</h3>
+          <span>Professional Team</span>
+        </div>
+      </div>
+
+      <div className="col-6 col-md-4 col-lg-2">
+        <div className="stat-box featured">
+          <h3>10 Years</h3>
+          <span>Market Experience</span>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+</section>
+         <Footer />
     </>
   );
 };

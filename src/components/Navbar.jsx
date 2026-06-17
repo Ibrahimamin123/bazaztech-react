@@ -38,6 +38,20 @@ const Navbar = () => {
                 Capabilities
               </Link>
             </li>
+            <li className="nav-item dropdown-custom">
+  <Link className="nav-link" to="#">
+    Pages
+    <span className="dropdown-arrow">▼</span>
+  </Link>
+
+  <ul className="dropdown-menu-custom">
+    <li><Link className="dropdown-link" to="/team">Our Team</Link></li>
+    <li><Link className="dropdown-link" to="/portfolio">Portfolio</Link></li>
+    <li><Link className="dropdown-link" to="/pricing">Pricing</Link></li>
+    <li><Link className="dropdown-link" to="/faq">FAQ</Link></li>
+    <li><Link className="dropdown-link" to="/contact">Contact</Link></li>
+  </ul>
+</li>
 
             <li className="nav-item">
               <Link className="nav-link" to="/about">
@@ -45,11 +59,7 @@ const Navbar = () => {
               </Link>
             </li>
 
-            <li className="nav-item">
-              <Link className="nav-link" to="/solutions">
-                Solutions
-              </Link>
-            </li>
+           
 
             <li className="nav-item">
               <Link className="nav-link" to="/services">
@@ -59,9 +69,9 @@ const Navbar = () => {
           </ul>
 
           <div className="d-flex flex-column flex-lg-row gap-2 mt-3 mt-lg-0">
-            <button className="btn btn-outline-light">
+            {/* <button className="btn btn-outline-light">
               Request A Demo
-            </button>
+            </button> */}
 
             <button className="btn btn-primary custom-btn">
               Get Started
