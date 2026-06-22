@@ -14,65 +14,59 @@ import Footer from "../components/Footer";
 
 const Home = () => {
 
- const trustData = [
-  {
-    title: "Tech Company",
-    desc: "High performance website solution",
-    img: card1
-  },
-  {
-    title: "Marketing Agency",
-    desc: "Boosted conversions by 200%",
-    img: card2
-  },
-  {
-    title: "E-Commerce Brand",
-    desc: "Scalable online store system",
-    img: card3
-  },
-  {
-    title: "Startup SaaS",
-    desc: "Full product development system",
-    img: card4
-  },
-  {
-    title: "Digital Agency",
-    desc: "Creative branding & UI/UX solutions",
-    img: card5
-  },
-  {
-    title: "Global Enterprise",
-    desc: "Enterprise level scalable systems",
-    img: card6
-  }
-];
+  const trustData = [
+    {
+
+      img: card1
+    },
+    {
+
+      img: card2
+    },
+    {
+
+      img: card3
+    },
+    {
+
+      img: card4
+    },
+    {
+
+      img: card5
+    },
+    {
+
+      img: card6
+    }
+  ];
   return (
-    
     <>
-    
       <Navbar />
-      
-
-      
-
-    <section
-  className="hero text-white d-flex align-items-center"
-  style={{
-    backgroundImage: `url(${heroImg})`,
-    backgroundSize: "cover",
-    backgroundPosition: "center",
-    backgroundRepeat: "no-repeat",
-    minHeight: "100vh"
-  }}
->
+      <section
+        className="hero text-white d-flex align-items-center"
+        style={{
+          backgroundImage: `url(${heroImg})`,
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          backgroundRepeat: "no-repeat",
+          minHeight: "100vh"
+        }}
+      >
         <div className="container text-center">
 
           {/* CENTER CONTENT */}
           <div className="row justify-content-center">
             <div className="col-lg-10">
+              <h1 className="display-4 fw-bold hero-title">
+                Build<span className="dot">.</span>
+                Launch<span className="dot">.</span>
+                Scale<span className="dot">.</span>
+                Grow<span className="dot">.</span>
 
-              <h1 className="display-4 fw-bold">
-                Welcome to Our Website
+                <br />
+
+                <span className="sub-text">Your Digital Presence</span>
               </h1>
 
               <p className="mt-3 text-light">
@@ -125,7 +119,7 @@ const Home = () => {
         </div>
       </section>
 
-            <section className="trust-section py-5 text-white">
+      <section className="trust-section py-5 text-white">
 
         <div className="container text-center">
 
@@ -139,15 +133,15 @@ const Home = () => {
 
           <div className="row g-4">
 
-       {trustData.map((item, index) => (
-  <div className="col-12 col-md-6 col-lg-4" key={index}>
-    <div className="trust-card">
-      <img src={item.img} alt={item.title} />
-      <h5>{item.title}</h5>
-      <p>{item.desc}</p>
-    </div>
-  </div>
-))}
+            {trustData.map((item, index) => (
+              <div className="col-12 col-md-6 col-lg-4" key={index}>
+                <div className="trust-card">
+                  <img src={item.img} alt={item.title} />
+                  {/* <h5>{item.title}</h5>
+      <p>{item.desc}</p> */}
+                </div>
+              </div>
+            ))}
 
           </div>
 
@@ -155,83 +149,83 @@ const Home = () => {
 
       </section>
       <section className="project-section">
-  <div className="container">
-    <div className="row justify-content-center text-center">
-      <div className="col-lg-8">
-        <h2 className="project-title">Start a Project</h2>
+        <div className="container">
+          <div className="row justify-content-center text-center">
+            <div className="col-lg-8">
+              <h2 className="project-title">Start a Project</h2>
 
-        <p className="project-text">
-          Do you have a business growth objective you'd like to achieve?
-          Are you ready to find out how <strong>BazazTech</strong> can help
-          build your business online? If so, make contact with us today...
-        </p>
+              <p className="project-text">
+                Do you have a business growth objective you'd like to achieve?
+                Are you ready to find out how <strong>BazazTech</strong> can help
+                build your business online? If so, make contact with us today...
+              </p>
 
-        <button className="btn project-btn">
-          Get A Quote
-        </button>
-      </div>
-    </div>
-  </div>
-</section>
-<section className="winning-section">
-  <div className="container">
-
-    <div className="row justify-content-center text-center">
-      <div className="col-lg-8">
-        <h2 className="winning-title">
-          Have A Look On Our Winning Deeds
-        </h2>
-
-        <p className="winning-desc">
-          Our success is anchored by our skilled team, extensive experience,
-          in-depth technical understanding, focused goal setting, and the
-          positive impact we have on our diverse customer base through their satisfaction.
-        </p>
-      </div>
-    </div>
-
-    <div className="row g-4 mt-4 justify-content-center">
-
-      <div className="col-6 col-md-4 col-lg-2">
-        <div className="stat-box">
-          <h3>10+</h3>
-          <span>Industries Served</span>
+              <button className="btn project-btn">
+                Get A Quote
+              </button>
+            </div>
+          </div>
         </div>
-      </div>
+      </section>
+      <section className="winning-section">
+        <div className="container">
 
-      <div className="col-6 col-md-4 col-lg-2">
-        <div className="stat-box">
-          <h3>100+</h3>
-          <span>Projects Delivered</span>
+          <div className="row justify-content-center text-center">
+            <div className="col-lg-8">
+              <h2 className="winning-title">
+                Have A Look On Our Winning Deeds
+              </h2>
+
+              <p className="winning-desc">
+                Our success is anchored by our skilled team, extensive experience,
+                in-depth technical understanding, focused goal setting, and the
+                positive impact we have on our diverse customer base through their satisfaction.
+              </p>
+            </div>
+          </div>
+
+          <div className="row g-4 mt-4 justify-content-center">
+
+            <div className="col-6 col-md-4 col-lg-2">
+              <div className="stat-box">
+                <h3>10+</h3>
+                <span>Industries Served</span>
+              </div>
+            </div>
+
+            <div className="col-6 col-md-4 col-lg-2">
+              <div className="stat-box">
+                <h3>100+</h3>
+                <span>Projects Delivered</span>
+              </div>
+            </div>
+
+            <div className="col-6 col-md-4 col-lg-2">
+              <div className="stat-box">
+                <h3>100%</h3>
+                <span>Client Satisfaction</span>
+              </div>
+            </div>
+
+            <div className="col-6 col-md-4 col-lg-2">
+              <div className="stat-box">
+                <h3>50+</h3>
+                <span>Professional Team</span>
+              </div>
+            </div>
+
+            <div className="col-6 col-md-4 col-lg-2">
+              <div className="stat-box ">
+                <h3>10 Years</h3>
+                <span>Market Experience</span>
+              </div>
+            </div>
+
+          </div>
+
         </div>
-      </div>
-
-      <div className="col-6 col-md-4 col-lg-2">
-        <div className="stat-box">
-          <h3>100%</h3>
-          <span>Client Satisfaction</span>
-        </div>
-      </div>
-
-      <div className="col-6 col-md-4 col-lg-2">
-        <div className="stat-box">
-          <h3>50+</h3>
-          <span>Professional Team</span>
-        </div>
-      </div>
-
-      <div className="col-6 col-md-4 col-lg-2">
-        <div className="stat-box featured">
-          <h3>10 Years</h3>
-          <span>Market Experience</span>
-        </div>
-      </div>
-
-    </div>
-
-  </div>
-</section>
-         <Footer />
+      </section>
+      <Footer />
     </>
   );
 };
