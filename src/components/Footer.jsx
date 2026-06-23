@@ -74,9 +74,9 @@ const Footer = () => {
                     {/* Contact */}
                     <div className="col-lg-3 col-md-6">
                         <h5 className="footer-title">Contact</h5>
-                        <p className="footer-contact">📧 info@bazaztech.com</p>
-                        <p className="footer-contact">📞 +92 300 1234567</p>
-                        <p className="footer-contact">📍 Karachi, Pakistan</p>
+                        <p className="footer-contact">📧 info@bazaztech.com  </p>
+                        <p className="footer-contact">📞 +92 327 8445721</p>
+                        <p className="footer-contact">📍 CM 67 mezzanine floor, Shamsi Society near Malir Halt, Karachi, Pakistan</p>
                     </div>
 
                 </div>

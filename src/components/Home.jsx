@@ -9,6 +9,7 @@ import card4 from "../images/card4.png";
 import card5 from "../images/card5.png";
 import card6 from "../images/card6.png";
 import Footer from "../components/Footer";
+import Chatbot from "../components/Chatbot";
 
 
 
@@ -44,7 +45,7 @@ const Home = () => {
     <>
       <Navbar />
       <section
-        className="hero text-white d-flex align-items-center"
+        className="hero text-white d-flex align-items-center position-relative"
         style={{
           backgroundImage: `url(${heroImg})`,
           backgroundSize: "cover",
@@ -56,17 +57,17 @@ const Home = () => {
         <div className="container text-center">
 
           {/* CENTER CONTENT */}
-          <div className="row justify-content-center">
+          <div className="row justify-content-center align-items-center flex-column-reverse flex-lg-row">
             <div className="col-lg-10">
-              <h1 className="display-4 fw-bold hero-title">
-                Build<span className="dot">.</span>
-                Launch<span className="dot">.</span>
-                Scale<span className="dot">.</span>
-                Grow<span className="dot">.</span>
+              <h1 className="hero-title">
+                <span>Build<span className="dot">.</span></span>{" "}
+                <span>Launch<span className="dot">.</span></span>{" "}
+                <span>Scale<span className="dot">.</span></span>{" "}
+                <span>Grow<span className="dot">.</span></span>
 
-                <br />
-
-                <span className="sub-text">Your Digital Presence</span>
+                <span className="sub-text">
+                  Your Digital Presence
+                </span>
               </h1>
 
               <p className="mt-3 text-light">
@@ -118,6 +119,7 @@ const Home = () => {
 
         </div>
       </section>
+      <Chatbot />
 
       <section className="trust-section py-5 text-white">
 
@@ -148,6 +150,7 @@ const Home = () => {
         </div>
 
       </section>
+      
       <section className="project-section">
         <div className="container">
           <div className="row justify-content-center text-center">

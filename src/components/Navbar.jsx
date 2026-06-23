@@ -82,8 +82,8 @@ const Navbar = () => {
     }`}
   >
     <li>
-      <Link className="dropdown-link" to="/webdevelopment">
-        Web Development
+      <Link className="dropdown-link" to="/corporatetraining">
+        Coorporate Training
       </Link>
     </li>
 
@@ -148,7 +148,7 @@ const Navbar = () => {
 
             {/* WHATSAPP */}
             <a
-              href="https://wa.me/923001234567"
+              href="https://wa.me/+92 327 8445721"
               target="_blank"
               rel="noreferrer"
               className="btn btn-success w-100 mb-3"
