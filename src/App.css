@@ -1002,7 +1002,6 @@ body {
 .sub-text {
   display: block;
   margin-top: 10px;
-  color: white !important;
 }
 
 .about-section {
@@ -1023,7 +1022,6 @@ body {
   background: linear-gradient(90deg,
       #3117b9,
       #7138f4);
-
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 
@@ -1608,6 +1606,15 @@ img {
   50% {
     opacity: 1;
   }
+  70%
+  {
+    opacity: 2;
+  }
+  75%
+
+  {
+    opacity: 1.7;
+  }
 
   100% {
     opacity: 0.4;
@@ -2054,10 +2061,12 @@ img {
   display: block;
   margin-top: 10px;
 
-  color: #fff !important;
   background: none !important;
+  background-image: none !important;
 
-  -webkit-text-fill-color: #fff !important;
-  -webkit-background-clip: unset !important;
-  background-clip: unset !important;
+  color: #7138f4 !important;
+
+  -webkit-text-fill-color: #7138f4 !important;
+  -webkit-background-clip: border-box !important;
+  background-clip: border-box !important;
 }
