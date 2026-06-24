@@ -60,10 +60,10 @@ const Home = () => {
           <div className="row justify-content-center align-items-center flex-column-reverse flex-lg-row">
             <div className="col-lg-10">
               <h1 className="hero-title">
-                <span>Build<span className="dot">.</span></span>{" "}
-                <span>Launch<span className="dot">.</span></span>{" "}
-                <span>Scale<span className="dot">.</span></span>{" "}
-                <span>Grow<span className="dot">.</span></span>
+                <span className="whi">Build<span className="dot">.</span></span>{" "}
+                <span className="whi">Launch<span className="dot">.</span></span>{" "}
+                <span className="whi">Scale<span className="dot">.</span></span>{" "}
+                <span className="whi">Grow<span className="dot">.</span></span>
 
                 <span className="sub-text">
                   Your Digital Presence

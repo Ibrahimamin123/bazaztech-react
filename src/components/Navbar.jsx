@@ -83,7 +83,7 @@ const Navbar = () => {
   >
     <li>
       <Link className="dropdown-link" to="/corporatetraining">
-        Coorporate Training
+        Corporate Training
       </Link>
     </li>
 
@@ -157,35 +157,37 @@ const Navbar = () => {
             </a>
 
             {/* EMAIL FORM */}
-            <form onSubmit={sendEmail} className="d-flex flex-column gap-2">
+           <form onSubmit={sendEmail} className="d-flex flex-column gap-2">
 
-              <input
-                name="user_name"
-                placeholder="Your Name"
-                className="form-control"
-                required
-              />
+  <input
+    type="text"
+    name="user_name"
+    placeholder="Your Name"
+    className="form-control"
+    required
+  />
 
-              <input
-                name="user_email"
-                placeholder="Your Email"
-                className="form-control"
-                required
-              />
+  <input
+    type="email"
+    name="user_email"
+    placeholder="Your Email"
+    className="form-control"
+    required
+  />
 
-              <textarea
-                name="message"
-                placeholder="Your Message"
-                className="form-control"
-                rows="4"
-                required
-              />
+  <textarea
+    name="message"
+    placeholder="Your Message"
+    className="form-control"
+    rows="4"
+    required
+  />
 
-              <button type="submit" className="btn btn-primary w-100">
-                Send Email
-              </button>
+  <button type="submit" className="btn btn-primary w-100">
+    Send Email
+  </button>
 
-            </form>
+</form>
 
           </div>
         </div>

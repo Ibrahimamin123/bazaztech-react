@@ -6,60 +6,58 @@ const Chatbot = () => {
   const [open, setOpen] = useState(false);
   const [input, setInput] = useState("");
   const [messages, setMessages] = useState([
-    { role: "bot", text: "Hi 👋 I am Bazaz Tech Assistant. Ask me anything!" }
+    { role: "bot", text: "Hi 👋 I am Bazaz Tech Assistant. Ask me anything!" },
   ]);
   const [loading, setLoading] = useState(false);
 
   // send message
-  const sendMessage = async () => {
-    if (!input.trim()) return;
+ const sendMessage = async () => {
+  if (!input.trim()) return;
 
-    const userMessage = input;
+  const userMessage = input;
 
-    // user message add
+  setMessages((prev) => [
+    ...prev,
+    { role: "user", text: userMessage }
+  ]);
+
+  setInput("");
+  setLoading(true);
+
+  try {
+    const res = await axios.post("http://localhost:5000/chat", {
+      message: userMessage,
+    });
+
     setMessages((prev) => [
       ...prev,
-      { role: "user", text: userMessage }
+      { role: "bot", text: res.data.reply }
     ]);
+  } catch (error) {
+    console.log(error);
 
-    setInput("");
-    setLoading(true);
+    setMessages((prev) => [
+      ...prev,
+      {
+        role: "bot",
+        text: "Server Error. Please check backend."
+      }
+    ]);
+  }
 
-    try {
-      const res = await axios.post("http://localhost:5000/chat", {
-        message: userMessage
-      });
-
-      setMessages((prev) => [
-        ...prev,
-        { role: "bot", text: res.data.reply }
-      ]);
-
-    } catch (error) {
-      setMessages((prev) => [
-        ...prev,
-        { role: "bot", text: "Server error. Please try again." }
-      ]);
-    }
-
-    setLoading(false);
-  };
+  setLoading(false);
+};
 
   return (
     <div className="chatbot-wrapper">
-
       {/* floating button */}
-      <button
-        className="chatbot-btn"
-        onClick={() => setOpen(!open)}
-      >
+      <button className="chatbot-btn" onClick={() => setOpen(!open)}>
         💬
       </button>
 
       {/* CHAT BOX */}
       {open && (
         <div className="chatbot-box">
-
           {/* HEADER */}
           <div className="chat-header">
             <h5>Bazaz AI Assistant</h5>
@@ -69,19 +67,12 @@ const Chatbot = () => {
           {/* MESSAGES */}
           <div className="chat-body">
             {messages.map((msg, i) => (
-              <div
-                key={i}
-                className={`chat-msg ${msg.role}`}
-              >
+              <div key={i} className={`chat-msg ${msg.role}`}>
                 {msg.text}
               </div>
             ))}
 
-            {loading && (
-              <div className="chat-msg bot">
-                Typing...
-              </div>
-            )}
+            {loading && <div className="chat-msg bot">Typing...</div>}
           </div>
 
           {/* INPUT */}
@@ -93,11 +84,8 @@ const Chatbot = () => {
               onKeyDown={(e) => e.key === "Enter" && sendMessage()}
             />
 
-            <button onClick={sendMessage}>
-              Send
-            </button>
+            <button onClick={sendMessage}>Send</button>
           </div>
-
         </div>
       )}
     </div>

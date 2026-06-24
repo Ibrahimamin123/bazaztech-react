@@ -206,12 +206,10 @@ body {
 .hero {
   width: 100%;
   min-height: 100vh;
-
   display: flex;
   align-items: center;
   justify-content: center;
   text-align: center;
-
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -223,16 +221,19 @@ body {
 .hero::before {
   content: "";
   position: absolute;
-  inset: 0;
+  inset: 1;
   background: rgba(0, 0, 0, 0.55);
 }
 
 /* content box */
 .hero-content {
   position: relative;
-  color: white;
+  color: white ;
   max-width: 800px;
   z-index: 1;
+}
+.why-section{
+  color: white !important;
 }
 
 .hero-content h1 {
@@ -827,11 +828,11 @@ body {
   display: flex;
   flex-wrap: wrap;
 }
-
 .custom-modal-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, .8);
+  background: rgba(0, 0, 0, 0.85);
+  backdrop-filter: blur(8px);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -840,22 +841,56 @@ body {
 
 .custom-modal {
   width: 90%;
-  max-width: 500px;
-  background: #111827;
-  padding: 30px;
-  border-radius: 15px;
+  max-width: 650px;
+  background: #0f172a;
+  border: 1px solid rgba(113, 56, 244, 0.4);
+  padding: 40px;
+  border-radius: 20px;
   text-align: center;
   position: relative;
+  box-shadow: 0 0 40px rgba(113, 56, 244, 0.25);
+  animation: modalZoom 0.4s ease;
+}
+
+@keyframes modalZoom {
+  from {
+    opacity: 0;
+    transform: scale(0.85);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
 }
 
 .close-btn {
   position: absolute;
   right: 15px;
-  top: 10px;
-  background: none;
+  top: 12px;
+  background: transparent;
   border: none;
+  color: #fff;
+  font-size: 28px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.close-btn:hover {
+  color: #7138f4;
+  transform: rotate(90deg);
+}
+
+.custom-modal h2 {
   color: white;
-  font-size: 30px;
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+
+.custom-modal p {
+  color: #cbd5e1;
+  margin-bottom: 30px;
 }
 
 .consultation-options {
@@ -866,18 +901,83 @@ body {
 
 .consult-card {
   flex: 1;
-  padding: 20px;
-  background: #000;
-  border: 1px solid #7138f4;
-  border-radius: 12px;
+  padding: 30px 20px;
+  background: #111827;
+  border: 1px solid rgba(113, 56, 244, 0.4);
+  border-radius: 16px;
   color: white;
   text-decoration: none;
-  transition: .3s;
+  transition: all 0.35s ease;
+  cursor: pointer;
+}
+
+.consult-card h4 {
+  margin-top: 15px;
+  font-size: 1.2rem;
+  font-weight: 600;
+}
+
+.consult-card p {
+  margin-top: 10px;
+  font-size: 14px;
+  color: #cbd5e1;
 }
 
 .consult-card:hover {
-  transform: translateY(-5px);
-  background: linear-gradient(90deg, #3117b9, #7138f4);
+  transform: translateY(-8px);
+  background: linear-gradient(135deg, #3117b9, #7138f4);
+  box-shadow: 0 15px 35px rgba(113, 56, 244, 0.4);
+}
+
+.consult-icon {
+  font-size: 40px;
+  color: #7138f4;
+  transition: 0.3s;
+}
+
+.consult-card:hover .consult-icon {
+  color: white;
+}
+
+@media (max-width: 768px) {
+  .custom-modal {
+    padding: 25px;
+  }
+
+  .consultation-options {
+    flex-direction: column;
+  }
+
+  .consult-card {
+    width: 100%;
+  }
+}
+.custom-modal h3 {
+  color: #ffffff;
+  font-weight: 700;
+}
+
+.custom-modal .btn-primary {
+  background: linear-gradient(135deg, #3117b9, #7138f4);
+  border: none;
+  color: #fff;
+  font-weight: 600;
+  transition: 0.3s;
+}
+
+.custom-modal .btn-primary:hover {
+  background: linear-gradient(135deg, #7138f4, #3117b9);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(113, 56, 244, 0.4);
+}
+.custom-modal .btn-success {
+  background: #25D366;
+  border: none;
+  font-weight: 600;
+}
+
+.custom-modal .btn-success:hover {
+  background: #1ebe5d;
 }
 
 @media(max-width:768px) {
@@ -902,6 +1002,7 @@ body {
 .sub-text {
   display: block;
   margin-top: 10px;
+  color: white !important;
 }
 
 .about-section {
@@ -1948,4 +2049,15 @@ img {
   border: none;
   color: white;
   padding: 8px 12px;
+}
+.sub-text {
+  display: block;
+  margin-top: 10px;
+
+  color: #fff !important;
+  background: none !important;
+
+  -webkit-text-fill-color: #fff !important;
+  -webkit-background-clip: unset !important;
+  background-clip: unset !important;
 }
