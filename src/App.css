@@ -461,7 +461,15 @@ body {
   font-size: 14px;
   color: #cbd5e1;
 }
+@media (max-width: 576px) {
+  .trust-card {
+    padding: 8px;
+  }
 
+  .trust-card img {
+    height: 120px;
+  }
+}
 .project-section {
   /* background: linear-gradient(135deg, #0f172a, #111827); */
   background-color: black;
