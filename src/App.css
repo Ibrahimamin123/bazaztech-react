@@ -428,12 +428,36 @@ body {
   padding: 15px;
 }
 
+/* Desktop */
 .trust-card img {
-  width: 180px !important;
-  max-width: 100%;
-  height: auto !important;
-  object-fit: contain !important;
-  display: block;
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+  border-radius: 10px;
+  transition: 0.3s ease;
+}
+
+/* Mobile */
+@media (max-width: 576px) {
+  .trust-card img {
+    height: 100px;      /* 90px, 100px, 110px apni pasand ke hisaab se */
+    object-fit: contain; /* image cut nahi hogi */
+  }
+
+  .trust-card {
+    padding: 8px;
+  }
+}
+@media screen and (max-width: 576px) {
+  .trust-card img {
+    height: 90px !important;
+    width: 100% !important;
+    object-fit: contain !important;
+  }
+
+  .trust-card {
+    padding: 6px !important;
+  }
 }
 /* Hover effect */
 .trust-card:hover {
