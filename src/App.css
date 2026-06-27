@@ -422,24 +422,19 @@ body {
 
 /* Card */
 .trust-card {
-  background: #111827;
-  border-radius: 15px;
-  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   padding: 15px;
-  text-align: center;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  transition: all 0.3s ease;
 }
 
-/* Image */
 .trust-card img {
-  width: 100%;
-  height: 180px;
-  object-fit: cover;
-  border-radius: 10px;
-  transition: 0.3s ease;
+  width: 180px !important;
+  max-width: 100%;
+  height: auto !important;
+  object-fit: contain !important;
+  display: block;
 }
-
 /* Hover effect */
 .trust-card:hover {
   transform: translateY(-10px);

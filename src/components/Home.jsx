@@ -126,14 +126,10 @@ const Home = () => {
 
           <div className="row g-4">
             {trustData.map((item, index) => (
-              <div className="row g-3">
-                {trustData.map((item, index) => (
-                  <div className="col-6 col-md-6 col-lg-4" key={index}>
-                    <div className="trust-card">
-                      <img src={item.img} alt={item.title} />
-                    </div>
-                  </div>
-                ))}
+              <div className="col-6 col-md-6 col-lg-4" key={index}>
+                <div className="trust-card">
+                  <img src={item.img} alt={item.title} />
+                </div>
               </div>
             ))}
           </div>
