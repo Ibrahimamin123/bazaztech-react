@@ -1,6 +1,6 @@
 import { useState } from "react";
-import axios from "axios";
 import "../App.css";
+import knowledge from "../data/knowledge";
 
 const Chatbot = () => {
   const [open, setOpen] = useState(false);
@@ -11,7 +11,7 @@ const Chatbot = () => {
   const [loading, setLoading] = useState(false);
 
   // send message
- const sendMessage = async () => {
+const sendMessage = () => {
   if (!input.trim()) return;
 
   const userMessage = input;
@@ -24,30 +24,30 @@ const Chatbot = () => {
   setInput("");
   setLoading(true);
 
-  try {
-    const res = await axios.post("http://localhost:5000/chat", {
-      message: userMessage,
-    });
+ setTimeout(() => {
+  const msg = userMessage.toLowerCase();
 
-    setMessages((prev) => [
-      ...prev,
-      { role: "bot", text: res.data.reply }
-    ]);
-  } catch (error) {
-    console.log(error);
+  const found = knowledge.find((item) =>
+    item.keywords.some((keyword) =>
+      msg.includes(keyword.toLowerCase())
+    )
+  );
 
-    setMessages((prev) => [
-      ...prev,
-      {
-        role: "bot",
-        text: "Server Error. Please check backend."
-      }
-    ]);
-  }
+  const reply = found
+    ? found.answer
+    : "❌ Sorry! I can only answer questions related to BazazTech services.";
+
+  setMessages((prev) => [
+    ...prev,
+    {
+      role: "bot",
+      text: reply,
+    },
+  ]);
 
   setLoading(false);
+}, 700);
 };
-
   return (
     <div className="chatbot-wrapper">
       {/* floating button */}
