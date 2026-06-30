@@ -1,0 +1,637 @@
+/* ======================================================
+   BAZAZTECH ADMIN PANEL
+   admin.css
+====================================================== */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background: #f4f7fb;
+  font-family: "Poppins", sans-serif;
+}
+
+/* ===========================
+   LAYOUT
+=========================== */
+
+.admin-container {
+  display: flex;
+  min-height: 100vh;
+}
+
+/* ===========================
+   SIDEBAR
+=========================== */
+
+.sidebar {
+  width: 270px;
+
+  background: #0b1f3a;
+
+  color: #fff;
+
+  position: fixed;
+
+  left: 0;
+
+  top: 0;
+
+  bottom: 0;
+
+  overflow-y: auto;
+
+  transition: 0.4s;
+
+  z-index: 999;
+
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+.logo {
+  padding: 30px;
+
+  text-align: center;
+
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.logo h3 {
+  color: #fff;
+
+  font-weight: 700;
+
+  letter-spacing: 1px;
+}
+
+.sidebar ul {
+  list-style: none;
+
+  padding: 25px 0;
+}
+
+.sidebar ul li {
+  margin-bottom: 6px;
+}
+
+.sidebar ul li a {
+  color: #d7d7d7;
+
+  text-decoration: none;
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 15px;
+
+  padding: 15px 30px;
+
+  transition: 0.3s;
+
+  font-size: 15px;
+}
+
+.sidebar ul li a:hover {
+  background: #0d6efd;
+
+  color: #fff;
+}
+
+.sidebar ul li svg {
+  font-size: 18px;
+}
+
+/* ===========================
+   MAIN
+=========================== */
+
+.main-content {
+  margin-left: 270px;
+
+  width: calc(100% - 270px);
+
+  min-height: 100vh;
+}
+
+/* ===========================
+   HEADER
+=========================== */
+
+.admin-header {
+  height: 80px;
+
+  background: #fff;
+
+  display: flex;
+
+  justify-content: space-between;
+
+  align-items: center;
+
+  padding: 0 35px;
+
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+
+  position: sticky;
+
+  top: 0;
+
+  z-index: 100;
+}
+
+.admin-header h2 {
+  font-size: 26px;
+
+  color: #0b1f3a;
+
+  font-weight: 700;
+}
+
+.profile {
+  display: flex;
+
+  align-items: center;
+
+  gap: 15px;
+}
+
+.profile img {
+  width: 48px;
+
+  height: 48px;
+
+  border-radius: 50%;
+
+  object-fit: cover;
+}
+
+.profile h6 {
+  margin: 0;
+
+  font-weight: 700;
+}
+
+.profile span {
+  font-size: 13px;
+
+  color: #777;
+}
+
+/* ===========================
+   DASHBOARD BODY
+=========================== */
+
+.dashboard-content {
+  padding: 35px;
+}
+
+/* ===========================
+   CARDS
+=========================== */
+
+.dashboard-cards {
+  display: grid;
+
+  grid-template-columns: repeat(4, 1fr);
+
+  gap: 25px;
+}
+
+.dashboard-card {
+  background: #fff;
+
+  border-radius: 15px;
+
+  padding: 25px;
+
+  transition: 0.4s;
+
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+}
+
+.dashboard-card:hover {
+  transform: translateY(-5px);
+
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+}
+
+.dashboard-card h3 {
+  font-size: 35px;
+
+  color: #0d6efd;
+
+  margin-bottom: 10px;
+}
+
+.dashboard-card p {
+  margin: 0;
+
+  color: #666;
+}
+
+/* ===========================
+   BUTTONS
+=========================== */
+
+.btn-primary {
+  background: #0d6efd !important;
+
+  border: none !important;
+}
+
+.btn-primary:hover {
+  background: #0056d2 !important;
+}
+
+/* ===========================
+   TABLE
+=========================== */
+
+.table {
+  background: #fff;
+
+  border-radius: 10px;
+
+  overflow: hidden;
+}
+
+/* ===========================
+   FORM
+=========================== */
+
+.form-control {
+  border-radius: 10px !important;
+
+  padding: 12px;
+}
+
+.form-control:focus {
+  border-color: #0d6efd;
+
+  box-shadow: none;
+}
+
+/* ===========================
+   SCROLLBAR
+=========================== */
+
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #0d6efd;
+}
+
+::-webkit-scrollbar-track {
+  background: #eee;
+}
+
+/* ===========================
+   RESPONSIVE
+=========================== */
+
+@media (max-width: 1200px) {
+  .dashboard-cards {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 991px) {
+  .sidebar {
+    left: -270px;
+  }
+
+  .main-content {
+    margin-left: 0;
+
+    width: 100%;
+  }
+}
+
+@media (max-width: 768px) {
+  .dashboard-cards {
+    grid-template-columns: 1fr;
+  }
+
+  .admin-header {
+    padding: 20px;
+  }
+
+  .dashboard-content {
+    padding: 20px;
+  }
+}
+
+@media (max-width: 500px) {
+  .logo h3 {
+    font-size: 20px;
+  }
+
+  .admin-header h2 {
+    font-size: 20px;
+  }
+}
+/* ==========================================
+   WELCOME BANNER
+========================================== */
+
+.welcome-banner{
+    background:linear-gradient(135deg,#0B1F3A,#0D6EFD);
+    border-radius:18px;
+    color:#fff;
+    padding:35px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:35px;
+    box-shadow:0 15px 40px rgba(0,0,0,.08);
+}
+
+.welcome-banner h2{
+    font-size:32px;
+    font-weight:700;
+    margin-bottom:10px;
+}
+
+.welcome-banner p{
+    opacity:.9;
+    margin:0;
+}
+
+.welcome-banner .btn{
+    background:#fff;
+    color:#0D6EFD;
+    border:none;
+    padding:12px 30px;
+    border-radius:10px;
+    font-weight:600;
+}
+
+.welcome-banner .btn:hover{
+    transform:translateY(-3px);
+    transition:.3s;
+}
+
+
+/* ==========================================
+   DASHBOARD CARDS
+========================================== */
+
+.dashboard-card{
+
+    background:#fff;
+
+    border-radius:18px;
+
+    padding:30px;
+
+    text-align:center;
+
+    transition:.4s;
+
+    cursor:pointer;
+
+    box-shadow:0 8px 25px rgba(0,0,0,.05);
+
+    border:1px solid #edf0f7;
+
+}
+
+.dashboard-card:hover{
+
+    transform:translateY(-8px);
+
+    box-shadow:0 20px 40px rgba(0,0,0,.12);
+
+}
+
+.dashboard-card svg{
+
+    font-size:42px;
+
+    color:#0D6EFD;
+
+    margin-bottom:18px;
+
+}
+
+.dashboard-card h2{
+
+    font-size:38px;
+
+    font-weight:700;
+
+    color:#0B1F3A;
+
+}
+
+.dashboard-card p{
+
+    margin:0;
+
+    color:#777;
+
+}
+
+
+/* ==========================================
+   QUICK ACTION
+========================================== */
+
+.action-card{
+
+    background:#fff;
+
+    border-radius:18px;
+
+    padding:30px;
+
+    box-shadow:0 8px 25px rgba(0,0,0,.05);
+
+}
+
+.action-card h4{
+
+    font-weight:700;
+
+    margin-bottom:25px;
+
+    color:#0B1F3A;
+
+}
+
+.action-card button{
+
+    border-radius:12px;
+
+    height:52px;
+
+    font-weight:600;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    gap:12px;
+
+    transition:.3s;
+
+}
+
+.action-card button:hover{
+
+    transform:translateY(-3px);
+
+}
+
+
+/* ==========================================
+   TABLE
+========================================== */
+
+.table-card{
+
+    background:#fff;
+
+    border-radius:18px;
+
+    padding:30px;
+
+    box-shadow:0 8px 25px rgba(0,0,0,.05);
+
+}
+
+.table-card h4{
+
+    font-weight:700;
+
+    color:#0B1F3A;
+
+}
+
+.table{
+
+    margin-top:15px;
+
+}
+
+.table thead{
+
+    background:#0B1F3A;
+
+    color:#fff;
+
+}
+
+.table thead th{
+
+    border:none;
+
+    padding:15px;
+
+}
+
+.table tbody td{
+
+    padding:18px 15px;
+
+    vertical-align:middle;
+
+}
+
+.table tbody tr{
+
+    transition:.3s;
+
+}
+
+.table tbody tr:hover{
+
+    background:#f4f7ff;
+
+}
+
+
+/* ==========================================
+   BADGES
+========================================== */
+
+.badge{
+
+    padding:8px 15px;
+
+    border-radius:20px;
+
+    font-size:12px;
+
+}
+
+
+/* ==========================================
+   RESPONSIVE
+========================================== */
+
+@media(max-width:991px){
+
+.welcome-banner{
+
+flex-direction:column;
+
+text-align:center;
+
+gap:25px;
+
+}
+
+}
+
+@media(max-width:768px){
+
+.dashboard-card{
+
+padding:25px;
+
+}
+
+.action-card{
+
+margin-bottom:25px;
+
+}
+
+.table-card{
+
+overflow-x:auto;
+
+}
+
+}
+
+@media(max-width:576px){
+
+.welcome-banner{
+
+padding:25px;
+
+}
+
+.welcome-banner h2{
+
+font-size:25px;
+
+}
+
+.dashboard-card h2{
+
+font-size:30px;
+
+}
+
+}
