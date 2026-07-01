@@ -101,6 +101,77 @@ body {
   color: #fff;
 }
 
+.sidebar-logout {
+  color: #d7d7d7;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  padding: 15px 30px;
+  transition: 0.3s;
+  font-size: 15px;
+  background: transparent;
+  border: none;
+  width: 100%;
+  text-align: left;
+}
+
+.sidebar-logout:hover {
+  background: rgba(220, 53, 69, 0.2);
+  color: #ff8a95;
+}
+
+.search-box {
+  position: relative;
+  max-width: 320px;
+}
+
+.search-box svg {
+  position: absolute;
+  left: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #98a2b3;
+}
+
+.search-box input {
+  padding-left: 40px;
+}
+
+.table-thumb {
+  width: 52px;
+  height: 52px;
+  object-fit: cover;
+  border-radius: 10px;
+}
+
+.stat-pill {
+  display: inline-block;
+  padding: 10px 16px;
+  border-radius: 999px;
+  background: #eef4ff;
+  color: #0b1f3a;
+  font-weight: 600;
+}
+
+.admin-modal-backdrop {
+  background: rgba(0, 0, 0, 0.55);
+}
+
+.modal-preview {
+  width: 100%;
+  max-height: 220px;
+  object-fit: cover;
+  border-radius: 12px;
+}
+
+.login-page {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #0b1f3a, #1e3a8a);
+  display: flex;
+  align-items: center;
+}
+
 .sidebar ul li svg {
   font-size: 18px;
 }

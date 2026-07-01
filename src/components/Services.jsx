@@ -1,163 +1,165 @@
-import Navbar from "../components/Navbar";
+import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
-
+import Navbar from "./Navbar";
+import Footer from "./Footer";
+import Chatbot from "./Chatbot";
+import { getPublicServices } from "../services/publicApi";
+import { FaServicestack } from "react-icons/fa";
 import "../App.css";
 
-import webDev from "../images/service1.webp";
-import ecommerce from "../images/service2.webp";
-import seo from "../images/service3.webp";
-import graphic from "../images/service4.webp";
+const PLACEHOLDER =
+  "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&auto=format&fit=crop";
 
 const Services = () => {
-  const services = [
-    {
-      id: 1,
-      title: "Website Development",
-      image: webDev,
-      description:
-        "We create modern, responsive, and high-performing websites that help businesses grow online.",
-      features: [
-        "Custom Design",
-        "Responsive UI",
-        "SEO Optimized",
-        "Fast Performance",
-      ],
-    },
-    {
-      id: 2,
-      title: "E-Commerce Solutions",
-      image: ecommerce,
-      description:
-        "Powerful online stores with secure payments and smooth UX.",
-      features: [
-        "Shop Setup",
-        "Payment Integration",
-        "Product Management",
-        "Mobile Friendly",
-      ],
-    },
-    {
-      id: 3,
-      title: "SEO Optimization",
-      image: seo,
-      description:
-        "Boost ranking and get organic traffic from search engines.",
-      features: [
-        "Keyword Research",
-        "On-page SEO",
-        "Technical SEO",
-        "Analytics",
-      ],
-    },
-    {
-      id: 4,
-      title: "Graphic Designing",
-      image: graphic,
-      description:
-        "Creative designs that build strong brand identity.",
-      features: [
-        "Logo Design",
-        "Brand Identity",
-        "Social Media Posts",
-        "Marketing Assets",
-      ],
-    },
-  ];
+  const [services, setServices] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+
+  useEffect(() => {
+    const loadServices = async () => {
+      try {
+        setLoading(true);
+        const res = await getPublicServices();
+        setServices(res.data.services || []);
+      } catch {
+        setError("Unable to load services. Please try again later.");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadServices();
+  }, []);
 
   return (
-    <div style={{ background: "#000", color: "#7138f4" }}>
-
+    <>
       <Navbar />
 
-      {/* HERO */}
-      <motion.section
-        initial={{ opacity: 0, y: 50 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8 }}
-        className="text-center py-5"
-      >
-        <h1 className="display-4 mt-5 fw-bold">
-          Our Services
-        </h1>
-        <p>
-          Scalable digital solutions for modern businesses
-        </p>
-      </motion.section>
+      <div className="services-page">
+        <motion.section
+          initial={{ opacity: 0, y: 40 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.7 }}
+          className="services-hero text-center"
+        >
+          <div className="container py-5">
+            <span className="services-badge">What We Offer</span>
+            <h1 className="display-4 fw-bold mt-3">Our Services</h1>
+            <p className="services-subtitle mx-auto">
+              Scalable digital solutions crafted for modern businesses — fully
+              managed from your admin dashboard.
+            </p>
+          </div>
+        </motion.section>
 
-      {/* SERVICES */}
-      <section className="container py-5">
-
-        {services.map((service, index) => (
-          <motion.div
-            key={service.id}
-            className={`row align-items-center mb-5 ${
-              index % 2 ? "flex-lg-row-reverse" : ""
-            }`}
-            initial={{ opacity: 0, y: 80 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: index * 0.2 }}
-            viewport={{ once: true }}
-          >
-
-            {/* IMAGE */}
-            <div className="col-lg-6">
-              <motion.img
-                src={service.image}
-                className="img-fluid rounded-4 shadow-lg"
-                whileHover={{ scale: 1.05 }}
-                transition={{ duration: 0.3 }}
-              />
+        <section className="container py-5">
+          {loading && (
+            <div className="text-center py-5">
+              <div className="spinner-border text-primary" role="status">
+                <span className="visually-hidden">Loading...</span>
+              </div>
             </div>
+          )}
 
-            {/* CONTENT */}
-            <div className="col-lg-6">
-              <h2 className="fw-bold mb-3">{service.title}</h2>
+          {error && (
+            <div className="alert alert-danger text-center">{error}</div>
+          )}
 
-              <p className="text-light opacity-75">
-                {service.description}
+          {!loading && !error && services.length === 0 && (
+            <div className="text-center py-5 services-empty">
+              <FaServicestack size={48} className="mb-3 text-primary" />
+              <h3>No services available yet</h3>
+              <p className="text-muted">
+                Services added from the admin panel will appear here automatically.
               </p>
-
-              <ul className="mt-3">
-                {service.features.map((f, i) => (
-                  <motion.li
-                    key={i}
-                    initial={{ opacity: 0, x: -20 }}
-                    whileInView={{ opacity: 1, x: 0 }}
-                    transition={{ delay: i * 0.1 }}
-                    className="mb-2"
-                  >
-                    ✓ {f}
-                  </motion.li>
-                ))}
-              </ul>
-
-              <button className="btn btn-primary mt-3 px-4 py-2">
-                Get Quote
-              </button>
             </div>
+          )}
 
-          </motion.div>
-        ))}
-      </section>
+          {!loading &&
+            services.map((service, index) => (
+              <motion.div
+                key={service._id}
+                className={`row align-items-center g-4 mb-5 pb-4 service-row ${
+                  index % 2 ? "flex-lg-row-reverse" : ""
+                }`}
+                initial={{ opacity: 0, y: 60 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: index * 0.1 }}
+                viewport={{ once: true }}
+              >
+                <div className="col-lg-6">
+                  <div className="service-image-wrap">
+                    <motion.img
+                      src={service.image || PLACEHOLDER}
+                      alt={service.title}
+                      className="img-fluid rounded-4 shadow-lg service-image"
+                      whileHover={{ scale: 1.03 }}
+                      transition={{ duration: 0.3 }}
+                      onError={(e) => {
+                        e.currentTarget.src = PLACEHOLDER;
+                      }}
+                    />
+                  </div>
+                </div>
 
-      {/* CTA */}
-      <motion.section
-        className="text-center py-5"
-        initial={{ opacity: 0 }}
-        whileInView={{ opacity: 1 }}
-        viewport={{ once: true }}
-      >
-        <h2>Ready to Grow Your Business?</h2>
-        <p className="text-muted">
-          Let’s build something amazing together
-        </p>
+                <div className="col-lg-6">
+                  {service.icon && (
+                    <span className="service-icon-badge">{service.icon}</span>
+                  )}
 
-        <button className="btn btn-outline-light px-4 py-2">
-          Contact Us
-        </button>
-      </motion.section>
+                  <h2 className="fw-bold mb-3 service-title">{service.title}</h2>
 
-    </div>
+                  <p className="service-description">{service.description}</p>
+
+                  {service.features?.length > 0 && (
+                    <ul className="service-features mt-4">
+                      {service.features.map((feature, i) => (
+                        <motion.li
+                          key={i}
+                          initial={{ opacity: 0, x: -16 }}
+                          whileInView={{ opacity: 1, x: 0 }}
+                          transition={{ delay: i * 0.08 }}
+                          viewport={{ once: true }}
+                        >
+                          <span className="feature-check">✓</span> {feature}
+                        </motion.li>
+                      ))}
+                    </ul>
+                  )}
+
+                  <Link
+                    to="/contact"
+                    className="btn btn-primary mt-4 px-4 py-2 service-cta"
+                  >
+                    Get Quote
+                  </Link>
+                </div>
+              </motion.div>
+            ))}
+        </section>
+
+        <motion.section
+          className="services-cta text-center"
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+        >
+          <div className="container py-5">
+            <h2 className="fw-bold mb-3">Ready to Grow Your Business?</h2>
+            <p className="mb-4">
+              Let&apos;s build something amazing together with BazazTech.
+            </p>
+            <Link to="/contact" className="btn btn-outline-light px-4 py-2">
+              Contact Us
+            </Link>
+          </div>
+        </motion.section>
+      </div>
+
+      <Footer />
+      <Chatbot />
+    </>
   );
 };
 

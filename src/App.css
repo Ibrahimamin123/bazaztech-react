@@ -2090,3 +2090,120 @@ img {
   -webkit-background-clip: border-box !important;
   background-clip: border-box !important;
 }
+
+/* Services Page */
+.services-page {
+  background: #050505;
+  color: #fff;
+  min-height: 100vh;
+}
+
+.services-hero {
+  background: linear-gradient(135deg, rgba(113, 56, 244, 0.15), rgba(5, 5, 5, 0.95));
+  border-bottom: 1px solid rgba(113, 56, 244, 0.2);
+}
+
+.services-badge {
+  display: inline-block;
+  padding: 8px 16px;
+  border-radius: 999px;
+  background: rgba(113, 56, 244, 0.15);
+  color: #b794ff;
+  font-size: 14px;
+  letter-spacing: 0.5px;
+}
+
+.services-subtitle {
+  max-width: 680px;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.service-row {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.service-image-wrap {
+  overflow: hidden;
+  border-radius: 1rem;
+}
+
+.service-image {
+  width: 100%;
+  height: 360px;
+  object-fit: cover;
+}
+
+.service-title {
+  color: #fff;
+}
+
+.service-description {
+  color: rgba(255, 255, 255, 0.75);
+  line-height: 1.8;
+}
+
+.service-icon-badge {
+  display: inline-block;
+  margin-bottom: 12px;
+  font-size: 28px;
+}
+
+.service-features {
+  list-style: none;
+  padding: 0;
+}
+
+.service-features li {
+  margin-bottom: 10px;
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.feature-check {
+  color: #7138f4;
+  margin-right: 8px;
+  font-weight: 700;
+}
+
+.service-cta {
+  background: #7138f4;
+  border: none;
+}
+
+.services-cta {
+  background: linear-gradient(180deg, rgba(113, 56, 244, 0.08), rgba(5, 5, 5, 1));
+}
+
+.services-empty {
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.footer-brand {
+  color: #7138f4;
+  font-weight: 700;
+}
+
+@media (max-width: 991px) {
+  .service-image {
+    height: 280px;
+  }
+}
+
+@media (max-width: 767px) {
+  .service-image {
+    height: 220px;
+  }
+}
+
+.contact-section {
+  background: #050505;
+  color: #fff;
+  min-height: 70vh;
+}
+
+.contact-info-card,
+.contact-form-card {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(113, 56, 244, 0.2);
+  border-radius: 16px;
+  padding: 28px;
+}

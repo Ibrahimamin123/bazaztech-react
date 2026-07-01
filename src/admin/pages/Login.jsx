@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import API from "../services/adminApi";
+import { loginAdmin } from "../services/adminApi";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -25,13 +25,10 @@ const Login = () => {
     try {
       setLoading(true);
 
-      const res = await API.post("/admin/login", form);
+      const res = await loginAdmin(form);
 
       localStorage.setItem("token", res.data.token);
-      localStorage.setItem(
-        "admin",
-        JSON.stringify(res.data.admin)
-      );
+      localStorage.setItem("admin", JSON.stringify(res.data.admin));
 
       navigate("/admin/dashboard");
     } catch (err) {
@@ -42,42 +39,38 @@ const Login = () => {
   };
 
   return (
-    <div className="container mt-5" style={{ maxWidth: "450px" }}>
-      <div className="card shadow p-4">
+    <div className="login-page">
+      <div className="container mt-5" style={{ maxWidth: "450px" }}>
+        <div className="card shadow p-4">
+          <h2 className="text-center mb-1">BazazTech Admin</h2>
+          <p className="text-center text-muted mb-4">Sign in to manage your website</p>
 
-        <h2 className="text-center mb-4">
-          Admin Login
-        </h2>
+          <form onSubmit={handleLogin}>
+            <input
+              type="email"
+              className="form-control mb-3"
+              placeholder="Email"
+              name="email"
+              value={form.email}
+              onChange={handleChange}
+              required
+            />
 
-        <form onSubmit={handleLogin}>
+            <input
+              type="password"
+              className="form-control mb-3"
+              placeholder="Password"
+              name="password"
+              value={form.password}
+              onChange={handleChange}
+              required
+            />
 
-          <input
-            type="email"
-            className="form-control mb-3"
-            placeholder="Email"
-            name="email"
-            value={form.email}
-            onChange={handleChange}
-          />
-
-          <input
-            type="password"
-            className="form-control mb-3"
-            placeholder="Password"
-            name="password"
-            value={form.password}
-            onChange={handleChange}
-          />
-
-          <button
-            className="btn btn-primary w-100"
-            disabled={loading}
-          >
-            {loading ? "Logging In..." : "Login"}
-          </button>
-
-        </form>
-
+            <button className="btn btn-primary w-100" disabled={loading}>
+              {loading ? "Logging In..." : "Login"}
+            </button>
+          </form>
+        </div>
       </div>
     </div>
   );

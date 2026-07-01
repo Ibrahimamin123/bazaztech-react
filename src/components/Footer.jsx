@@ -1,95 +1,107 @@
 import { Link } from "react-router-dom";
-import logo from "../images/logo-head.png";
+import { useEffect, useState } from "react";
 import { FaFacebookF, FaInstagram, FaLinkedinIn } from "react-icons/fa";
+import { getPublicSettings, getPublicSocial } from "../services/publicApi";
 
+const iconMap = {
+  facebook: FaFacebookF,
+  instagram: FaInstagram,
+  linkedin: FaLinkedinIn,
+};
 
 const Footer = () => {
-    return (
-        <footer className="footer-section">
-            <div className="container">
+  const [settings, setSettings] = useState(null);
+  const [socialLinks, setSocialLinks] = useState([]);
 
-                <div className="row gy-4">
+  useEffect(() => {
+    const loadFooterData = async () => {
+      try {
+        const [settingsRes, socialRes] = await Promise.all([
+          getPublicSettings(),
+          getPublicSocial(),
+        ]);
 
-                    {/* About */}
-                    <div className="col-lg-4 col-md-6">
-                        <img src={logo} className="footer-logo" alt="logo" />
+        setSettings(settingsRes.data.settings);
+        setSocialLinks(socialRes.data.socialLinks || []);
+      } catch {
+        setSettings(null);
+        setSocialLinks([]);
+      }
+    };
 
-                        <p className="footer-text mt-3">
-                            Bazaz Tech is a creative digital agency providing
-                            modern web development and business solutions.
-                        </p>
+    loadFooterData();
+  }, []);
 
-                        {/* Social Icons */}
-                        <div className="footer-social">
+  return (
+    <footer className="footer-section">
+      <div className="container">
+        <div className="row gy-4">
+          <div className="col-lg-4 col-md-6">
+            {settings?.logo ? (
+              <img src={settings.logo} className="footer-logo" alt="logo" />
+            ) : (
+              <h4 className="footer-brand">{settings?.siteName || "BazazTech"}</h4>
+            )}
 
-                            <a
-                                href="https://www.facebook.com/YOUR_PAGE"
-                                target="_blank"
-                                rel="noopener noreferrer"
-                            >
-                                <FaFacebookF />
-                            </a>
+            <p className="footer-text mt-3">
+              {settings?.footerText ||
+                "Bazaz Tech is a creative digital agency providing modern web development and business solutions."}
+            </p>
 
-                            <a
-                                href="https://www.instagram.com/YOUR_PROFILE"
-                                target="_blank"
-                                rel="noopener noreferrer"
-                            >
-                                <FaInstagram />
-                            </a>
-
-                            <a
-                                href="https://www.linkedin.com/in/YOUR_PROFILE"
-                                target="_blank"
-                                rel="noopener noreferrer"
-                            >
-                                <FaLinkedinIn />
-                            </a>
-
-                        </div>
-                    </div>
-
-                    {/* Quick Links */}
-                    <div className="col-lg-2 col-md-6">
-                        <h5 className="footer-title">Quick Links</h5>
-                        <ul className="footer-links">
-                            <li><Link to="/">Home</Link></li>
-                            <li><Link to="/about">About</Link></li>
-                            <li><Link to="/services">Services</Link></li>
-                            <li><Link to="/contact">Contact</Link></li>
-                        </ul>
-                    </div>
-
-                    {/* Pages */}
-                    <div className="col-lg-3 col-md-6">
-                        <h5 className="footer-title">Pages</h5>
-                        <ul className="footer-links">
-                            <li><Link to="/team">Team</Link></li>
-                            <li><Link to="/portfolio">Portfolio</Link></li>
-                            <li><Link to="/faq">FAQ</Link></li>
-                            <li><Link to="/pricing">Pricing</Link></li>
-                        </ul>
-                    </div>
-
-                    {/* Contact */}
-                    <div className="col-lg-3 col-md-6">
-                        <h5 className="footer-title">Contact</h5>
-                        <p className="footer-contact">📧 info@bazaztech.com  </p>
-                        <p className="footer-contact">📞 +92 327 8445721</p>
-                        <p className="footer-contact">📍 CM 67 mezzanine floor, Shamsi Society near Malir Halt, Karachi, Pakistan</p>
-                    </div>
-
-                </div>
-
-                <hr className="footer-divider" />
-
-                <div className="text-center footer-bottom">
-                    © 2026 Bazaz Tech. All Rights Reserved.
-                </div>
-
+            <div className="footer-social">
+              {socialLinks.map((link) => {
+                const Icon = iconMap[link.platform?.toLowerCase()] || FaLinkedinIn;
+                return (
+                  <a
+                    key={link._id}
+                    href={link.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <Icon />
+                  </a>
+                );
+              })}
             </div>
-        </footer>
-    );
+          </div>
+
+          <div className="col-lg-2 col-md-6">
+            <h5 className="footer-title">Quick Links</h5>
+            <ul className="footer-links">
+              <li><Link to="/">Home</Link></li>
+              <li><Link to="/about">About</Link></li>
+              <li><Link to="/services">Services</Link></li>
+              <li><Link to="/contact">Contact</Link></li>
+            </ul>
+          </div>
+
+          <div className="col-lg-3 col-md-6">
+            <h5 className="footer-title">Pages</h5>
+            <ul className="footer-links">
+              <li><Link to="/casestudies">Case Studies</Link></li>
+              <li><Link to="/corporatetraining">Training</Link></li>
+              <li><Link to="/services">Services</Link></li>
+            </ul>
+          </div>
+
+          <div className="col-lg-3 col-md-6">
+            <h5 className="footer-title">Contact</h5>
+            <p className="footer-contact">📧 {settings?.email || "info@bazaztech.com"}</p>
+            <p className="footer-contact">📞 {settings?.phone || "+92 327 8445721"}</p>
+            <p className="footer-contact">
+              📍 {settings?.address || "Karachi, Pakistan"}
+            </p>
+          </div>
+        </div>
+
+        <hr className="footer-divider" />
+
+        <div className="text-center footer-bottom">
+          {settings?.copyright || "© 2026 Bazaz Tech. All Rights Reserved."}
+        </div>
+      </div>
+    </footer>
+  );
 };
 
 export default Footer;
