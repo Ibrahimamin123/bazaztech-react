@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
+import { motion } from "framer-motion";
 import Navbar from "./Navbar";
 import Footer from "./Footer";
+import WhatsAppButton from "./WhatsAppButton";
 import "../App.css";
 import { getPublicCaseStudies } from "../services/publicApi";
 
@@ -30,15 +32,20 @@ const CaseStudies = () => {
     <>
       <Navbar />
 
-      <section className="case-hero">
+      <motion.section
+        className="case-hero page-with-navbar"
+        initial={{ opacity: 0, y: 24 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
+      >
         <div className="container text-center">
           <h1>Case Studies</h1>
           <p>
-            Real projects. Real results. Discover how Bazaz Tech helps businesses
-            grow through innovative digital solutions.
+            Real projects. Real results. Discover how Bazaz Tech helps businesses grow through
+            innovative digital solutions.
           </p>
         </div>
-      </section>
+      </motion.section>
 
       <section className="case-section">
         <div className="container">
@@ -56,11 +63,15 @@ const CaseStudies = () => {
 
           {!loading &&
             caseStudies.map((item, index) => (
-              <div
+              <motion.div
                 key={item._id}
                 className={`row align-items-center case-row ${
                   index % 2 !== 0 ? "flex-lg-row-reverse" : ""
                 }`}
+                initial={{ opacity: 0, y: 40 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.55, delay: index * 0.05 }}
+                viewport={{ once: true }}
               >
                 <div className="col-lg-6 mb-4 mb-lg-0">
                   <div className="case-image-wrapper">
@@ -89,22 +100,25 @@ const CaseStudies = () => {
                         ))}
                       </div>
                     )}
-
-                    <button className="btn custom-btn mt-4">View Project</button>
                   </div>
                 </div>
-              </div>
+              </motion.div>
             ))}
         </div>
       </section>
 
-      <section className="case-cta">
+      <motion.section
+        className="case-cta"
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        viewport={{ once: true }}
+      >
         <div className="container text-center">
           <h2>Ready To Become Our Next Success Story?</h2>
           <p>Let&apos;s build innovative digital solutions that drive real business growth.</p>
-          <button className="btn custom-btn">Get Free Consultation</button>
+          <WhatsAppButton>Get Free Consultation</WhatsAppButton>
         </div>
-      </section>
+      </motion.section>
 
       <Footer />
     </>

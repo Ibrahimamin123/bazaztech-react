@@ -1,22 +1,33 @@
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import {
   FaHome,
-  FaGlobe,
   FaServicestack,
-  FaUserTie,
   FaImages,
   FaUsers,
   FaEnvelope,
-  FaQuestionCircle,
-  FaStar,
-  FaShareAlt,
   FaCog,
   FaSignOutAlt,
   FaGraduationCap,
+  FaUserCircle,
+  FaChevronLeft,
+  FaChevronRight,
 } from "react-icons/fa";
+import Logo from "../../components/Logo";
 
-const Sidebar = () => {
+const navItems = [
+  { to: "/admin/dashboard", icon: FaHome, label: "Dashboard" },
+  { to: "/admin/services", icon: FaServicestack, label: "Services" },
+  { to: "/admin/portfolio", icon: FaImages, label: "Case Studies" },
+  { to: "/admin/training", icon: FaGraduationCap, label: "Training" },
+  { to: "/admin/admins", icon: FaUsers, label: "Admins" },
+  { to: "/admin/messages", icon: FaEnvelope, label: "Messages" },
+  { to: "/admin/settings", icon: FaCog, label: "Settings" },
+  { to: "/admin/profile", icon: FaUserCircle, label: "My Profile" },
+];
+
+const Sidebar = ({ collapsed, mobileOpen, onNavigate, onToggleCollapse }) => {
   const navigate = useNavigate();
+  const location = useLocation();
 
   const handleLogout = () => {
     localStorage.removeItem("token");
@@ -25,84 +36,43 @@ const Sidebar = () => {
   };
 
   return (
-    <div className="sidebar">
+    <aside className={`sidebar ${mobileOpen ? "open" : ""} ${collapsed ? "collapsed" : ""}`}>
       <div className="logo">
-        <h3>BazazTech</h3>
+        <Link to="/admin/dashboard" onClick={onNavigate} className="logo-link">
+          <Logo showText={!collapsed} />
+        </Link>
+        <button
+          type="button"
+          className="sidebar-collapse-btn d-none d-lg-inline-flex"
+          onClick={onToggleCollapse}
+          aria-label={collapsed ? "Expand sidebar" : "Collapse sidebar"}
+        >
+          {collapsed ? <FaChevronRight /> : <FaChevronLeft />}
+        </button>
       </div>
 
       <ul>
-        <li>
-          <Link to="/admin/dashboard">
-            <FaHome /> Dashboard
-          </Link>
-        </li>
-        <li>
-          <Link to="/admin/hero">
-            <FaGlobe /> Hero Section
-          </Link>
-        </li>
-        <li>
-          <Link to="/admin/services">
-            <FaServicestack /> Services
-          </Link>
-        </li>
-        <li>
-          <Link to="/admin/about">
-            <FaGlobe /> About
-          </Link>
-        </li>
-        <li>
-          <Link to="/admin/team">
-            <FaUserTie /> Team
-          </Link>
-        </li>
-        <li>
-          <Link to="/admin/portfolio">
-            <FaImages /> Case Studies
-          </Link>
-        </li>
-        <li>
-          <Link to="/admin/training">
-            <FaGraduationCap /> Training
-          </Link>
-        </li>
-        <li>
-          <Link to="/admin/testimonials">
-            <FaStar /> Testimonials
-          </Link>
-        </li>
-        <li>
-          <Link to="/admin/faqs">
-            <FaQuestionCircle /> FAQs
-          </Link>
-        </li>
-        <li>
-          <Link to="/admin/social">
-            <FaShareAlt /> Social Links
-          </Link>
-        </li>
-        <li>
-          <Link to="/admin/admins">
-            <FaUsers /> Admins
-          </Link>
-        </li>
-        <li>
-          <Link to="/admin/messages">
-            <FaEnvelope /> Messages
-          </Link>
-        </li>
-        <li>
-          <Link to="/admin/settings">
-            <FaCog /> Settings
-          </Link>
-        </li>
+        {navItems.map(({ to, icon: Icon, label }) => (
+          <li key={to}>
+            <Link
+              to={to}
+              onClick={onNavigate}
+              className={location.pathname === to ? "active" : ""}
+              title={collapsed ? label : undefined}
+            >
+              <Icon />
+              {!collapsed && <span>{label}</span>}
+            </Link>
+          </li>
+        ))}
         <li>
           <button type="button" className="sidebar-logout" onClick={handleLogout}>
-            <FaSignOutAlt /> Logout
+            <FaSignOutAlt />
+            {!collapsed && <span>Logout</span>}
           </button>
         </li>
       </ul>
-    </div>
+    </aside>
   );
 };
 

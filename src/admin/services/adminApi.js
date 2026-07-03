@@ -2,6 +2,9 @@ import API from "../../config/api";
 
 export const loginAdmin = (data) => API.post("/admin/login", data);
 
+export const getProfile = () => API.get("/admin/profile");
+export const updateProfile = (data) => API.put("/admin/profile", data);
+
 export const getAdmins = () => API.get("/admin");
 export const registerAdmin = (data) => API.post("/admin/register", data);
 export const updateAdmin = (id, data) => API.put(`/admin/${id}`, data);

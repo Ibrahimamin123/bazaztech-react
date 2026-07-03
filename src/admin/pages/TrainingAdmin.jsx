@@ -22,7 +22,6 @@ const TrainingAdmin = () => (
       },
       { name: "description", label: "Description", type: "textarea" },
       { name: "image", label: "Image", type: "upload" },
-      { name: "order", label: "Order", type: "number", col: "col-md-6" },
       { name: "status", label: "Status", type: "checkbox", checkboxLabel: "Active" },
     ]}
   />

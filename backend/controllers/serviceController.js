@@ -16,7 +16,7 @@ export const addService = async (req, res) => {
 
 export const getServices = async (_req, res) => {
   try {
-    const services = await Service.find().sort({ order: 1, createdAt: -1 });
+    const services = await Service.find().sort({ createdAt: -1 });
 
     res.json({ success: true, services });
   } catch (err) {
@@ -26,10 +26,7 @@ export const getServices = async (_req, res) => {
 
 export const getPublicServices = async (_req, res) => {
   try {
-    const services = await Service.find({ status: true }).sort({
-      order: 1,
-      createdAt: -1,
-    });
+    const services = await Service.find({ status: true }).sort({ createdAt: -1 });
 
     res.json({ success: true, services });
   } catch (err) {

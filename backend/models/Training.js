@@ -10,7 +10,6 @@ const trainingSchema = new mongoose.Schema(
       enum: ["hero", "feature", "program"],
       default: "program",
     },
-    order: { type: Number, default: 0 },
     status: { type: Boolean, default: true },
   },
   { timestamps: true }

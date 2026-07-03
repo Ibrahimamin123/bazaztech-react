@@ -2,10 +2,18 @@ import { useEffect, useState } from "react";
 import Swal from "sweetalert2";
 import AdminLayout from "../layouts/AdminLayout";
 import { deleteAdmin, getAdmins, registerAdmin } from "../services/adminApi";
+import {
+  collectErrors,
+  hasErrors,
+  validateEmail,
+  validatePassword,
+  validateRequired,
+} from "../../utils/validation";
 
 const AdminsAdmin = () => {
   const [admins, setAdmins] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [errors, setErrors] = useState({});
   const [form, setForm] = useState({
     name: "",
     email: "",
@@ -32,9 +40,19 @@ const AdminsAdmin = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    const nextErrors = collectErrors([
+      { field: "name", message: validateRequired(form.name, "Name") },
+      { field: "email", message: validateEmail(form.email) },
+      { field: "password", message: validatePassword(form.password, { minLength: 6 }) },
+    ]);
+
+    setErrors(nextErrors);
+    if (hasErrors(nextErrors)) return;
+
     try {
       await registerAdmin(form);
       setForm({ name: "", email: "", password: "", role: "Admin" });
+      setErrors({});
       await loadAdmins();
       Swal.fire({ icon: "success", title: "Admin created", timer: 1400, showConfirmButton: false });
     } catch (err) {
@@ -61,21 +79,51 @@ const AdminsAdmin = () => {
   };
 
   return (
-    <AdminLayout>
+    <AdminLayout title="Admin Accounts">
       <div className="dashboard-content">
-        <h2>Admin Accounts</h2>
         <p className="text-muted mb-4">Manage dashboard users and roles.</p>
 
-        <form className="table-card mb-4" onSubmit={handleSubmit}>
+        <form className="table-card mb-4" onSubmit={handleSubmit} noValidate>
           <div className="row g-3">
             <div className="col-md-3">
-              <input className="form-control" placeholder="Name" value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} required />
+              <input
+                className={`form-control ${errors.name ? "is-invalid" : ""}`}
+                placeholder="Name"
+                value={form.name}
+                onChange={(e) => {
+                  setForm({ ...form, name: e.target.value });
+                  setErrors((prev) => ({ ...prev, name: "" }));
+                }}
+              />
+              {errors.name && <div className="invalid-feedback d-block">{errors.name}</div>}
             </div>
             <div className="col-md-3">
-              <input type="email" className="form-control" placeholder="Email" value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} required />
+              <input
+                type="email"
+                className={`form-control ${errors.email ? "is-invalid" : ""}`}
+                placeholder="Email"
+                value={form.email}
+                onChange={(e) => {
+                  setForm({ ...form, email: e.target.value });
+                  setErrors((prev) => ({ ...prev, email: "" }));
+                }}
+              />
+              {errors.email && <div className="invalid-feedback d-block">{errors.email}</div>}
             </div>
             <div className="col-md-3">
-              <input type="password" className="form-control" placeholder="Password" value={form.password} onChange={(e) => setForm({ ...form, password: e.target.value })} required />
+              <input
+                type="password"
+                className={`form-control ${errors.password ? "is-invalid" : ""}`}
+                placeholder="Password"
+                value={form.password}
+                onChange={(e) => {
+                  setForm({ ...form, password: e.target.value });
+                  setErrors((prev) => ({ ...prev, password: "" }));
+                }}
+              />
+              {errors.password && (
+                <div className="invalid-feedback d-block">{errors.password}</div>
+              )}
             </div>
             <div className="col-md-2">
               <select className="form-select" value={form.role} onChange={(e) => setForm({ ...form, role: e.target.value })}>

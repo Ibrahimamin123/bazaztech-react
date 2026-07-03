@@ -13,7 +13,7 @@ export const createCrudController = (Model, resourceName, singularName) => {
 
   getPublic: async (_req, res) => {
     try {
-      const items = await Model.find({ status: true }).sort({ order: 1, createdAt: -1 });
+      const items = await Model.find({ status: true }).sort({ createdAt: -1 });
       res.json({ success: true, [resourceName]: items });
     } catch (err) {
       res.status(500).json({ success: false, message: err.message });

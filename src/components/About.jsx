@@ -1,7 +1,8 @@
+import { useEffect, useState } from "react";
+import { motion } from "framer-motion";
 import Navbar from "./Navbar";
 import Footer from "./Footer";
 import "../App.css";
-import { useEffect, useState } from "react";
 import { getPublicAbout } from "../services/publicApi";
 
 const fallbackAbout = [
@@ -13,6 +14,14 @@ const fallbackAbout = [
     title: "Our Vision",
     text: "Our vision is to become a globally recognized digital agency known for creativity, innovation, and excellence.",
   },
+{
+  title: "Our Founder",
+  text: "Our founder established Bazaz Tech with a passion for delivering innovative digital solutions, empowering businesses through technology, creativity, and a commitment to excellence.",
+},
+{
+  title: "Our CEO",
+  text: "Our CEO leads Bazaz Tech with a vision of innovation, growth, and customer success, ensuring every project meets the highest standards of quality and professionalism.",
+},
 ];
 
 const About = () => {
@@ -44,7 +53,12 @@ const About = () => {
   return (
     <>
       <Navbar />
-      <section className="about-section">
+      <motion.section
+        className="about-section page-with-navbar"
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
+      >
         <div className="container">
           <div className="about-main-heading text-center">
             <h2>About Us</h2>
@@ -82,7 +96,7 @@ const About = () => {
             </div>
           )}
         </div>
-      </section>
+      </motion.section>
 
       <Footer />
     </>

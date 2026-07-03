@@ -64,7 +64,7 @@ const Services = () => {
   };
 
   return (
-    <AdminLayout>
+    <AdminLayout title="Services">
       <div className="dashboard-content">
         <div className="d-flex flex-wrap justify-content-between align-items-center mb-4 gap-3">
           <div>

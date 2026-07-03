@@ -1,4 +1,10 @@
 import { createCrudController } from "../utils/crudController.js";
+import {
+  validateEmail,
+  validateRequired,
+  validatePhone,
+  sanitizeString,
+} from "../utils/validate.js";
 import About from "../models/About.js";
 import TeamMember from "../models/TeamMember.js";
 import CaseStudy from "../models/CaseStudy.js";
@@ -20,7 +26,30 @@ export const messageController = {
   ...createCrudController(Message, "messages"),
   create: async (req, res) => {
     try {
-      const message = await Message.create(req.body);
+      const nameCheck = validateRequired(req.body.name, "Name", 80);
+      const emailCheck = validateEmail(req.body.email);
+      const messageCheck = validateRequired(req.body.message, "Message", 2000);
+      const phoneCheck = validatePhone(req.body.phone);
+
+      if (!nameCheck.valid || !emailCheck.valid || !messageCheck.valid || !phoneCheck.valid) {
+        return res.status(400).json({
+          success: false,
+          message:
+            nameCheck.message ||
+            emailCheck.message ||
+            messageCheck.message ||
+            phoneCheck.message,
+        });
+      }
+
+      const message = await Message.create({
+        name: nameCheck.value,
+        email: emailCheck.value,
+        phone: phoneCheck.value,
+        subject: sanitizeString(req.body.subject, 150),
+        message: messageCheck.value,
+      });
+
       res.status(201).json({
         success: true,
         message: "Message sent successfully.",

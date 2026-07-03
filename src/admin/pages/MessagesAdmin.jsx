@@ -51,9 +51,8 @@ const MessagesAdmin = () => {
   };
 
   return (
-    <AdminLayout>
+    <AdminLayout title="Messages">
       <div className="dashboard-content">
-        <h2>Messages</h2>
         <p className="text-muted mb-4">View and manage contact form submissions.</p>
 
         <div className="table-card">

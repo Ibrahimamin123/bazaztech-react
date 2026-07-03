@@ -9,7 +9,6 @@ const emptyForm = {
   icon: "",
   image: "",
   features: "",
-  order: 0,
   status: true,
 };
 
@@ -26,7 +25,6 @@ const ServiceModal = ({ show, onClose, refreshServices, editData }) => {
         icon: editData.icon || "",
         image: editData.image || "",
         features: (editData.features || []).join(", "),
-        order: editData.order || 0,
         status: editData.status ?? true,
       });
     } else {
@@ -71,7 +69,6 @@ const ServiceModal = ({ show, onClose, refreshServices, editData }) => {
       description: form.description,
       icon: form.icon,
       image: form.image,
-      order: Number(form.order) || 0,
       status: form.status,
       features: form.features
         .split(",")
@@ -183,7 +180,7 @@ const ServiceModal = ({ show, onClose, refreshServices, editData }) => {
                   </div>
                 )}
 
-                <div className="col-md-8">
+                <div className="col-12">
                   <label className="form-label">Features (comma separated)</label>
                   <input
                     className="form-control"
@@ -191,17 +188,6 @@ const ServiceModal = ({ show, onClose, refreshServices, editData }) => {
                     value={form.features}
                     onChange={handleChange}
                     placeholder="Custom Design, SEO Optimized"
-                  />
-                </div>
-
-                <div className="col-md-4">
-                  <label className="form-label">Display Order</label>
-                  <input
-                    type="number"
-                    className="form-control"
-                    name="order"
-                    value={form.order}
-                    onChange={handleChange}
                   />
                 </div>
 

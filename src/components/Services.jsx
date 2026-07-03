@@ -41,7 +41,7 @@ const Services = () => {
           initial={{ opacity: 0, y: 40 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7 }}
-          className="services-hero text-center"
+          className="services-hero text-center page-with-navbar"
         >
           <div className="container py-5">
             <span className="services-badge">What We Offer</span>

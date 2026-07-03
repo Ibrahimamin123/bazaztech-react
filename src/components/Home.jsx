@@ -1,3 +1,5 @@
+import { useEffect, useState } from "react";
+import { motion } from "framer-motion";
 import Navbar from "../components/Navbar";
 import "../App.css";
 import { FaStar } from "react-icons/fa";
@@ -35,7 +37,7 @@ const Home = () => {
   return (
     <>
       <Navbar />
-      <section
+      <motion.section
         className="hero text-white d-flex align-items-center position-relative"
         style={{
           backgroundImage: `url(${heroImg})`,
@@ -44,10 +46,18 @@ const Home = () => {
           backgroundRepeat: "no-repeat",
           minHeight: "100vh",
         }}
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.8 }}
       >
         <div className="container text-center">
           {/* CENTER CONTENT */}
-          <div className="row justify-content-center align-items-center flex-column-reverse flex-lg-row">
+          <motion.div
+            className="row justify-content-center align-items-center flex-column-reverse flex-lg-row"
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7, delay: 0.2 }}
+          >
             <div className="col-lg-10">
               <h1 className="hero-title">
                 <span className="whi">
@@ -111,9 +121,9 @@ const Home = () => {
                 </div>
               </div>
             </div>
-          </div>
+          </motion.div>
         </div>
-      </section>
+      </motion.section>
       <Chatbot />
 
       <section className="trust-section py-5 text-white">

@@ -22,7 +22,7 @@ const CmsManager = ({
   const perPage = 6;
 
   const emptyForm = useMemo(() => {
-    const base = { status: true, order: 0, ...defaultItem };
+    const base = { status: true, ...defaultItem };
     fields.forEach((field) => {
       base[field.name] = field.defaultValue ?? "";
     });
@@ -91,6 +91,13 @@ const CmsManager = ({
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    for (const field of fields) {
+      if (field.required && !String(form[field.name] ?? "").trim()) {
+        Swal.fire("Validation Error", `${field.label} is required.`, "warning");
+        return;
+      }
+    }
+
     const payload = { ...form };
 
     fields.forEach((field) => {
@@ -147,7 +154,7 @@ const CmsManager = ({
   };
 
   return (
-    <AdminLayout>
+    <AdminLayout title={title}>
       <div className="dashboard-content">
         <div className="d-flex flex-wrap justify-content-between align-items-center mb-4 gap-3">
           <div>

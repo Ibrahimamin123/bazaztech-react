@@ -50,7 +50,7 @@ const Dashboard = () => {
   ];
 
   return (
-    <AdminLayout>
+    <AdminLayout title="Dashboard">
       <div className="dashboard-content container-fluid">
         <div className="welcome-banner mb-4">
           <div>
