@@ -6,7 +6,7 @@ const Chatbot = () => {
   const [open, setOpen] = useState(false);
   const [input, setInput] = useState("");
   const [messages, setMessages] = useState([
-    { role: "bot", text: "Hi 👋 I am Bazaz Tech Assistant. Ask me anything!" },
+    { role: "bot", text: "Hi 👋 I am Bazaz Tech Assistant. Ask me About Bazaztech Services!" },
   ]);
   const [loading, setLoading] = useState(false);
 

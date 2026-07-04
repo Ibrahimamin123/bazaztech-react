@@ -62,7 +62,7 @@ const Navbar = () => {
                     Corporate Training
                   </Link>
                 </li>
-                <li>
+                {/* <li>
                   <Link className="dropdown-link" to="/corporatetraining">
                     AI Automation
                   </Link>
@@ -71,7 +71,7 @@ const Navbar = () => {
                   <Link className="dropdown-link" to="/corporatetraining">
                     Digital Marketing
                   </Link>
-                </li>
+                </li> */}
               </motion.ul>
             </li>
 

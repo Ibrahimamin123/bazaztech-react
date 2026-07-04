@@ -53,7 +53,9 @@ const MessagesAdmin = () => {
   return (
     <AdminLayout title="Messages">
       <div className="dashboard-content">
-        <p className="text-muted mb-4">View and manage contact form submissions.</p>
+        <p className="text-muted mb-4">
+          View and manage contact form submissions.
+        </p>
 
         <div className="table-card">
           <div className="table-responsive">
@@ -63,14 +65,16 @@ const MessagesAdmin = () => {
                   <th>Name</th>
                   <th>Email</th>
                   <th>Subject</th>
+                  <th style={{ minWidth: "300px" }}>Message</th>
                   <th>Status</th>
                   <th>Actions</th>
                 </tr>
               </thead>
+
               <tbody>
                 {loading && (
                   <tr>
-                    <td colSpan="5" className="text-center py-4">
+                    <td colSpan="6" className="text-center py-4">
                       <div className="spinner-border spinner-border-sm text-primary" />
                     </td>
                   </tr>
@@ -78,7 +82,7 @@ const MessagesAdmin = () => {
 
                 {!loading && messages.length === 0 && (
                   <tr>
-                    <td colSpan="5" className="text-center py-4 text-muted">
+                    <td colSpan="6" className="text-center py-4 text-muted">
                       No messages yet.
                     </td>
                   </tr>
@@ -88,19 +92,35 @@ const MessagesAdmin = () => {
                   messages.map((msg) => (
                     <tr key={msg._id}>
                       <td>{msg.name}</td>
+
                       <td>{msg.email}</td>
-                      <td>{msg.subject || msg.message?.slice(0, 40)}</td>
+
+                      <td>{msg.subject || "-"}</td>
+
+                      <td
+                        style={{
+                          maxWidth: "350px",
+                          whiteSpace: "normal",
+                          wordBreak: "break-word",
+                        }}
+                      >
+                        {msg.message || "-"}
+                      </td>
+
                       <td>
                         <select
                           className="form-select form-select-sm"
                           value={msg.status}
-                          onChange={(e) => handleStatusChange(msg._id, e.target.value)}
+                          onChange={(e) =>
+                            handleStatusChange(msg._id, e.target.value)
+                          }
                         >
                           <option value="new">New</option>
                           <option value="pending">Pending</option>
                           <option value="closed">Closed</option>
                         </select>
                       </td>
+
                       <td>
                         <button
                           className="btn btn-sm btn-outline-danger"

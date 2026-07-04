@@ -93,7 +93,7 @@ const Contact = () => {
         <div className="container">
           <div className="text-center mb-5 contact-heading">
             <h1>Contact Us</h1>
-            <p className="text-muted">
+            <p>
               Have a project in mind? Send us a message and our team will respond shortly.
             </p>
           </div>
