@@ -118,7 +118,7 @@ const ServiceModal = ({ show, onClose, refreshServices, editData }) => {
           <form onSubmit={handleSubmit}>
             <div className="modal-body">
               <div className="row g-3">
-                <div className="col-md-6">
+                <div className="col-md-12">
                   <label className="form-label">Title</label>
                   <input
                     className="form-control"
@@ -129,17 +129,7 @@ const ServiceModal = ({ show, onClose, refreshServices, editData }) => {
                   />
                 </div>
 
-                <div className="col-md-6">
-                  <label className="form-label">Icon (emoji or text)</label>
-                  <input
-                    className="form-control"
-                    name="icon"
-                    value={form.icon}
-                    onChange={handleChange}
-                    placeholder="🚀"
-                  />
-                </div>
-
+            
                 <div className="col-12">
                   <label className="form-label">Description</label>
                   <textarea
@@ -152,16 +142,7 @@ const ServiceModal = ({ show, onClose, refreshServices, editData }) => {
                   />
                 </div>
 
-                <div className="col-md-8">
-                  <label className="form-label">Image URL</label>
-                  <input
-                    className="form-control"
-                    name="image"
-                    value={form.image}
-                    onChange={handleChange}
-                    placeholder="https://..."
-                  />
-                </div>
+            
 
                 <div className="col-md-4">
                   <label className="form-label">Upload Image</label>
@@ -180,17 +161,7 @@ const ServiceModal = ({ show, onClose, refreshServices, editData }) => {
                   </div>
                 )}
 
-                <div className="col-12">
-                  <label className="form-label">Features (comma separated)</label>
-                  <input
-                    className="form-control"
-                    name="features"
-                    value={form.features}
-                    onChange={handleChange}
-                    placeholder="Custom Design, SEO Optimized"
-                  />
-                </div>
-
+         
                 <div className="col-12">
                   <div className="form-check">
                     <input

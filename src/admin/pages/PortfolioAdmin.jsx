@@ -8,9 +8,8 @@ const PortfolioAdmin = () => (
     api={caseStudyApi}
     dataKey="caseStudies"
     fields={[
-      { name: "title", label: "Title", required: true, col: "col-md-6" },
+      { name: "title", label: "Title", required: true, col: "col-md-12" },
       { name: "description", label: "Description", type: "textarea", required: true },
-      { name: "results", label: "Results (comma separated)", type: "tags" },
       { name: "image", label: "Image", type: "upload" },
       { name: "status", label: "Status", type: "checkbox", checkboxLabel: "Active" },
     ]}

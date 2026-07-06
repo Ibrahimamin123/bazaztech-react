@@ -118,10 +118,6 @@ const SettingsAdmin = () => {
               <label className="form-label">Tagline</label>
               <input className="form-control" name="tagline" value={form.tagline} onChange={handleChange} />
             </div>
-            <div className="col-md-8">
-              <label className="form-label">Logo URL</label>
-              <input className="form-control" name="logo" value={form.logo} onChange={handleChange} />
-            </div>
             <div className="col-md-4">
               <label className="form-label">Upload Logo</label>
               <input type="file" className="form-control" accept="image/*" onChange={handleLogoUpload} />
