@@ -2,6 +2,13 @@ import { useEffect, useState } from "react";
 import Swal from "sweetalert2";
 import { addService, updateService } from "../services/serviceApi";
 import { uploadImage } from "../services/adminApi";
+import {
+  collectErrors,
+  hasErrors,
+  validateImageFile,
+  validateMaxLength,
+  validateRequired,
+} from "../../utils/validation";
 
 const emptyForm = {
   title: "",
@@ -16,6 +23,7 @@ const ServiceModal = ({ show, onClose, refreshServices, editData }) => {
   const [form, setForm] = useState(emptyForm);
   const [saving, setSaving] = useState(false);
   const [uploading, setUploading] = useState(false);
+  const [errors, setErrors] = useState({});
 
   useEffect(() => {
     if (editData) {
@@ -30,6 +38,7 @@ const ServiceModal = ({ show, onClose, refreshServices, editData }) => {
     } else {
       setForm(emptyForm);
     }
+    setErrors({});
   }, [editData, show]);
 
   if (!show) return null;
@@ -37,16 +46,23 @@ const ServiceModal = ({ show, onClose, refreshServices, editData }) => {
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
     setForm({ ...form, [name]: type === "checkbox" ? checked : value });
+    setErrors((prev) => ({ ...prev, [name]: "" }));
   };
 
   const handleImageUpload = async (e) => {
     const file = e.target.files?.[0];
     if (!file) return;
+    const fileError = validateImageFile(file, { maxSizeMB: 1 });
+    if (fileError) {
+      setErrors((prev) => ({ ...prev, image: fileError }));
+      return;
+    }
 
     try {
       setUploading(true);
       const res = await uploadImage(file);
       setForm((prev) => ({ ...prev, image: res.data.imageUrl }));
+      setErrors((prev) => ({ ...prev, image: "" }));
       Swal.fire({
         icon: "success",
         title: "Uploaded",
@@ -61,8 +77,21 @@ const ServiceModal = ({ show, onClose, refreshServices, editData }) => {
     }
   };
 
+  const validateForm = () => {
+    const nextErrors = collectErrors([
+      { field: "title", message: validateRequired(form.title, "Title") },
+      { field: "description", message: validateRequired(form.description, "Description") },
+      { field: "image", message: validateRequired(form.image, "Image") },
+      { field: "title", message: validateMaxLength(form.title, 120, "Title") },
+      { field: "description", message: validateMaxLength(form.description, 1200, "Description") },
+    ]);
+    setErrors(nextErrors);
+    return !hasErrors(nextErrors);
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (!validateForm()) return;
 
     const payload = {
       title: form.title,
@@ -121,25 +150,27 @@ const ServiceModal = ({ show, onClose, refreshServices, editData }) => {
                 <div className="col-md-12">
                   <label className="form-label">Title</label>
                   <input
-                    className="form-control"
+                    className={`form-control ${errors.title ? "is-invalid" : ""}`}
                     name="title"
                     value={form.title}
                     onChange={handleChange}
-                    required
+                    placeholder="Enter service title"
                   />
+                  {errors.title && <div className="invalid-feedback d-block">{errors.title}</div>}
                 </div>
 
             
                 <div className="col-12">
                   <label className="form-label">Description</label>
                   <textarea
-                    className="form-control"
+                    className={`form-control ${errors.description ? "is-invalid" : ""}`}
                     name="description"
                     rows="4"
                     value={form.description}
                     onChange={handleChange}
-                    required
+                    placeholder="Describe the service and value proposition"
                   />
+                  {errors.description && <div className="invalid-feedback d-block">{errors.description}</div>}
                 </div>
 
             
@@ -148,11 +179,13 @@ const ServiceModal = ({ show, onClose, refreshServices, editData }) => {
                   <label className="form-label">Upload Image</label>
                   <input
                     type="file"
-                    className="form-control"
+                    className={`form-control ${errors.image ? "is-invalid" : ""}`}
                     accept="image/*"
                     onChange={handleImageUpload}
                     disabled={uploading}
                   />
+                  <small className="text-muted d-block mt-1">Supported: JPG/PNG/GIF/WebP/SVG, max 1MB.</small>
+                  {errors.image && <div className="invalid-feedback d-block">{errors.image}</div>}
                 </div>
 
                 {form.image && (

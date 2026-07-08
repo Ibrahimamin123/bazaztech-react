@@ -13,8 +13,6 @@ import cmsRoutes from "./routes/cmsRoutes.js";
 
 dotenv.config();
 
-connectDB();
-
 const app = express();
 
 app.use(
@@ -34,12 +32,41 @@ app.use("/api/hero", heroRoutes);
 app.use("/api/settings", settingsRoutes);
 app.use("/api/cms", cmsRoutes);
 
+app.use((err, _req, res, next) => {
+  if (!err) return next();
+
+  if (err.code === "LIMIT_FILE_SIZE") {
+    return res.status(400).json({
+      success: false,
+      message: "Image must be smaller than 1MB.",
+    });
+  }
+
+  if (err.message === "Only image files are allowed.") {
+    return res.status(400).json({
+      success: false,
+      message: "Only image files are allowed.",
+    });
+  }
+
+  return res.status(500).json({
+    success: false,
+    message: err.message || "Server error.",
+  });
+});
+
 app.get("/", (_req, res) => {
   res.send("BazazTech Backend is Running...");
 });
 
 const PORT = process.env.PORT || 5000;
 
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-});
+const startServer = async () => {
+  await connectDB();
+
+  app.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`);
+  });
+};
+
+startServer();

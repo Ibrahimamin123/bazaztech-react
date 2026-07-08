@@ -8,16 +8,23 @@ import {
   updateAdmin,
   deleteAdmin,
 } from "../controllers/adminController.js";
-import { protect, authorize } from "../middleware/authMiddleware.js";
+import { protect, authorize, attachAdmin, authorizePermissions } from "../middleware/authMiddleware.js";
 
 const router = express.Router();
 
 router.post("/login", loginAdmin);
 router.get("/profile", protect, getProfile);
 router.put("/profile", protect, updateProfile);
-router.post("/register", protect, authorize("Super Admin"), registerAdmin);
-router.get("/", protect, authorize("Super Admin", "Admin"), getAdmins);
-router.put("/:id", protect, authorize("Super Admin"), updateAdmin);
-router.delete("/:id", protect, authorize("Super Admin"), deleteAdmin);
+router.post(
+  "/register",
+  protect,
+  attachAdmin,
+  authorize("Super Administrator"),
+  authorizePermissions("manage_admins"),
+  registerAdmin
+);
+router.get("/", protect, attachAdmin, authorizePermissions("manage_admins"), getAdmins);
+router.put("/:id", protect, attachAdmin, authorizePermissions("manage_admins"), updateAdmin);
+router.delete("/:id", protect, attachAdmin, authorizePermissions("manage_admins"), deleteAdmin);
 
 export default router;

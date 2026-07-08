@@ -1,24 +1,34 @@
 import bcrypt from "bcrypt";
-import Admin from "../models/Admin.js";
+import Admin, { ADMIN_PERMISSIONS, ADMIN_ROLES } from "../models/Admin.js";
 import jwt from "jsonwebtoken";
-import {
-  validateEmail,
-  validatePassword,
-  validateRequired,
-  sanitizeString,
-} from "../utils/validate.js";
+import { validateEmail, validatePassword, validateRequired, sanitizeString } from "../utils/validate.js";
+
+const normalizeRole = (role) => {
+  if (role === "Super Admin") return "Super Administrator";
+  if (role === "Admin") return "Administrator";
+  if (role === "Editor") return "Content Editor";
+  return role || "Administrator";
+};
 
 const adminResponse = (admin) => ({
   id: admin._id,
   name: admin.name,
   email: admin.email,
-  role: admin.role,
+  role: normalizeRole(admin.role),
+  permissions: admin.permissions || [],
   avatar: admin.avatar || "",
 });
 
+const getRolePermissions = (role, permissions = []) => {
+  const normalizedRole = normalizeRole(role);
+  if (normalizedRole === "Super Administrator") return ADMIN_PERMISSIONS;
+  if (permissions.includes("full_access")) return ADMIN_PERMISSIONS;
+  return permissions.filter((permission) => ADMIN_PERMISSIONS.includes(permission));
+};
+
 export const registerAdmin = async (req, res) => {
   try {
-    const { name, email, password, role } = req.body;
+    const { name, email, password, role, permissions = [] } = req.body;
 
     const nameCheck = validateRequired(name, "Name", 80);
     const emailCheck = validateEmail(email);
@@ -43,11 +53,16 @@ export const registerAdmin = async (req, res) => {
 
     const hashedPassword = await bcrypt.hash(password, 10);
 
+    const normalizedRole = normalizeRole(role || "Administrator");
+    if (!ADMIN_ROLES.includes(normalizedRole)) {
+      return res.status(400).json({ success: false, message: "Invalid role selected." });
+    }
     const admin = await Admin.create({
       name: nameCheck.value,
       email: emailCheck.value,
       password: hashedPassword,
-      role: role || "Admin",
+      role: normalizedRole,
+      permissions: getRolePermissions(normalizedRole, permissions),
     });
 
     res.status(201).json({
@@ -99,8 +114,19 @@ export const loginAdmin = async (req, res) => {
       });
     }
 
+    if (!process.env.JWT_SECRET) {
+      return res.status(500).json({
+        success: false,
+        message: "Server configuration error. JWT_SECRET is not set.",
+      });
+    }
+
     const token = jwt.sign(
-      { id: admin._id, role: admin.role },
+      {
+        id: String(admin._id),
+        role: normalizeRole(admin.role),
+        permissions: admin.permissions || [],
+      },
       process.env.JWT_SECRET,
       { expiresIn: "7d" }
     );
@@ -118,7 +144,7 @@ export const loginAdmin = async (req, res) => {
 
 export const getProfile = async (req, res) => {
   try {
-    const admin = await Admin.findById(req.admin.id).select("-password");
+    const admin = await Admin.findById(String(req.admin.id)).select("-password");
 
     if (!admin) {
       return res.status(404).json({ success: false, message: "Admin not found." });
@@ -132,7 +158,7 @@ export const getProfile = async (req, res) => {
 
 export const updateProfile = async (req, res) => {
   try {
-    const admin = await Admin.findById(req.admin.id);
+    const admin = await Admin.findById(String(req.admin.id));
 
     if (!admin) {
       return res.status(404).json({ success: false, message: "Admin not found." });
@@ -239,6 +265,15 @@ export const updateAdmin = async (req, res) => {
         return res.status(400).json({ success: false, message: passwordCheck.message });
       }
       updates.password = await bcrypt.hash(updates.password, 10);
+    }
+
+    if (updates.role || updates.permissions) {
+      const role = normalizeRole(updates.role || "Administrator");
+      if (!ADMIN_ROLES.includes(role)) {
+        return res.status(400).json({ success: false, message: "Invalid role selected." });
+      }
+      updates.role = role;
+      updates.permissions = getRolePermissions(role, updates.permissions || []);
     }
 
     const admin = await Admin.findByIdAndUpdate(req.params.id, updates, {

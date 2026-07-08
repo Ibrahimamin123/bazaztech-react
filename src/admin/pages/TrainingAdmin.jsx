@@ -8,7 +8,7 @@ const TrainingAdmin = () => (
     api={trainingApi}
     dataKey="trainings"
     fields={[
-      { name: "title", label: "Title", required: true, col: "col-md-6" },
+      { name: "title", label: "Title", required: true, col: "col-md-6", maxLength: 120, placeholder: "Enter training title" },
       {
         name: "section",
         label: "Section",
@@ -20,8 +20,8 @@ const TrainingAdmin = () => (
           { value: "program", label: "Program" },
         ],
       },
-      { name: "description", label: "Description", type: "textarea" },
-      { name: "image", label: "Image", type: "upload" },
+      { name: "description", label: "Description", type: "textarea", required: true, maxLength: 1000, placeholder: "Enter a clear and concise description" },
+      { name: "image", label: "Image", type: "upload", required: true, hint: "Supported: JPG/PNG/GIF/WebP/SVG, max 1MB." },
       { name: "status", label: "Status", type: "checkbox", checkboxLabel: "Active" },
     ]}
   />

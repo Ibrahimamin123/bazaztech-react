@@ -1,5 +1,7 @@
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const PHONE_RE = /^[+]?[\d\s\-()]{7,20}$/;
+const URL_RE =
+  /^(https?:\/\/)([\w-]+\.)+[\w-]{2,}(\/[\w\-./?%&=+#~:]*)?$/i;
 
 export const validateEmail = (email) => {
   if (!email?.trim()) return "Email is required.";
@@ -33,7 +35,37 @@ export const validateMaxLength = (value, max, label = "This field") => {
   return "";
 };
 
-export const validateImageFile = (file, { maxSizeMB = 5 } = {}) => {
+export const validateMinLength = (value, min, label = "This field") => {
+  if (value && String(value).trim().length < min) {
+    return `${label} must be at least ${min} characters.`;
+  }
+  return "";
+};
+
+export const validateUrl = (value, label = "URL", { required = false } = {}) => {
+  if (!value?.trim()) return required ? `${label} is required.` : "";
+  if (!URL_RE.test(value.trim())) return `Enter a valid ${label.toLowerCase()}.`;
+  return "";
+};
+
+export const validateNumber = (
+  value,
+  label = "Value",
+  { required = false, min, max, integer = false } = {}
+) => {
+  if (value === "" || value === null || value === undefined) {
+    return required ? `${label} is required.` : "";
+  }
+
+  const parsed = Number(value);
+  if (Number.isNaN(parsed)) return `${label} must be a valid number.`;
+  if (integer && !Number.isInteger(parsed)) return `${label} must be a whole number.`;
+  if (min !== undefined && parsed < min) return `${label} must be at least ${min}.`;
+  if (max !== undefined && parsed > max) return `${label} must be ${max} or less.`;
+  return "";
+};
+
+export const validateImageFile = (file, { maxSizeMB = 1 } = {}) => {
   if (!file) return "";
   const allowed = ["image/jpeg", "image/png", "image/gif", "image/webp", "image/svg+xml"];
   if (!allowed.includes(file.type)) return "Only JPEG, PNG, GIF, WebP, or SVG images are allowed.";

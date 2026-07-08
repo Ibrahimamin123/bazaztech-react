@@ -10,6 +10,33 @@ import {
   validateRequired,
 } from "../../utils/validation";
 
+const ADMIN_ROLES = [
+  "Super Administrator",
+  "Administrator",
+  "Content Manager",
+  "Content Editor",
+  "Operations Manager",
+  "Support Manager",
+];
+
+const PERMISSIONS = [
+  { key: "dashboard_access", label: "Dashboard Access" },
+  { key: "create_records", label: "Create Records" },
+  { key: "edit_records", label: "Edit Records" },
+  { key: "delete_records", label: "Delete Records" },
+  { key: "view_records", label: "View Records" },
+  { key: "manage_users", label: "Manage Users" },
+  { key: "manage_admins", label: "Manage Admins" },
+  { key: "manage_messages", label: "Manage Messages" },
+  { key: "manage_website_settings", label: "Manage Website Settings" },
+  { key: "manage_case_studies", label: "Manage Case Studies" },
+  { key: "manage_services", label: "Manage Services" },
+  { key: "manage_training_programs", label: "Manage Training Programs" },
+  { key: "manage_contact_information", label: "Manage Contact Information" },
+  { key: "manage_media", label: "Manage Media" },
+  { key: "full_access", label: "Full Access" },
+];
+
 const AdminsAdmin = () => {
   const [admins, setAdmins] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -18,7 +45,8 @@ const AdminsAdmin = () => {
     name: "",
     email: "",
     password: "",
-    role: "Admin",
+    role: "Administrator",
+    permissions: ["dashboard_access", "view_records"],
   });
 
   const loadAdmins = async () => {
@@ -44,6 +72,13 @@ const AdminsAdmin = () => {
       { field: "name", message: validateRequired(form.name, "Name") },
       { field: "email", message: validateEmail(form.email) },
       { field: "password", message: validatePassword(form.password, { minLength: 6 }) },
+      {
+        field: "permissions",
+        message:
+          form.role === "Super Administrator" || form.permissions.length > 0
+            ? ""
+            : "Select at least one permission.",
+      },
     ]);
 
     setErrors(nextErrors);
@@ -51,7 +86,13 @@ const AdminsAdmin = () => {
 
     try {
       await registerAdmin(form);
-      setForm({ name: "", email: "", password: "", role: "Admin" });
+      setForm({
+        name: "",
+        email: "",
+        password: "",
+        role: "Administrator",
+        permissions: ["dashboard_access", "view_records"],
+      });
       setErrors({});
       await loadAdmins();
       Swal.fire({ icon: "success", title: "Admin created", timer: 1400, showConfirmButton: false });
@@ -78,10 +119,35 @@ const AdminsAdmin = () => {
     }
   };
 
+  const togglePermission = (permission) => {
+    setForm((prev) => {
+      if (permission === "full_access") {
+        const exists = prev.permissions.includes("full_access");
+        return {
+          ...prev,
+          permissions: exists ? [] : PERMISSIONS.map((item) => item.key),
+        };
+      }
+
+      const exists = prev.permissions.includes(permission);
+      const next = exists
+        ? prev.permissions.filter((item) => item !== permission)
+        : [...prev.permissions, permission];
+
+      return {
+        ...prev,
+        permissions: next.includes("full_access")
+          ? next
+          : next.filter((item) => item !== "full_access"),
+      };
+    });
+    setErrors((prev) => ({ ...prev, permissions: "" }));
+  };
+
   return (
     <AdminLayout title="Admin Accounts">
       <div className="dashboard-content">
-        <p className="text-muted mb-4">Manage dashboard users and roles.</p>
+        <p className="text-muted mb-4">Manage dashboard users with role-based permissions.</p>
 
         <form className="table-card mb-4" onSubmit={handleSubmit} noValidate>
           <div className="row g-3">
@@ -126,15 +192,59 @@ const AdminsAdmin = () => {
               )}
             </div>
             <div className="col-md-2">
-              <select className="form-select" value={form.role} onChange={(e) => setForm({ ...form, role: e.target.value })}>
-                <option value="Admin">Admin</option>
-                <option value="Editor">Editor</option>
-                <option value="Super Admin">Super Admin</option>
+              <select
+                className="form-select"
+                value={form.role}
+                onChange={(e) => {
+                  const nextRole = e.target.value;
+                  setForm((prev) => ({
+                    ...prev,
+                    role: nextRole,
+                    permissions:
+                      nextRole === "Super Administrator"
+                        ? PERMISSIONS.map((item) => item.key)
+                        : prev.permissions.filter((permission) => permission !== "full_access"),
+                  }));
+                }}
+              >
+                {ADMIN_ROLES.map((role) => (
+                  <option key={role} value={role}>
+                    {role}
+                  </option>
+                ))}
               </select>
             </div>
             <div className="col-md-1">
               <button className="btn btn-primary w-100">Add</button>
             </div>
+          </div>
+          <div className="mt-3">
+            <label className="form-label fw-semibold mb-2">Permissions</label>
+            <div className="row g-2">
+              {PERMISSIONS.map((permission) => (
+                <div className="col-md-4" key={permission.key}>
+                  <div className="form-check">
+                    <input
+                      type="checkbox"
+                      className="form-check-input"
+                      id={permission.key}
+                      checked={
+                        form.role === "Super Administrator" ||
+                        form.permissions.includes(permission.key)
+                      }
+                      onChange={() => togglePermission(permission.key)}
+                      disabled={form.role === "Super Administrator"}
+                    />
+                    <label className="form-check-label" htmlFor={permission.key}>
+                      {permission.label}
+                    </label>
+                  </div>
+                </div>
+              ))}
+            </div>
+            {errors.permissions && (
+              <div className="invalid-feedback d-block">{errors.permissions}</div>
+            )}
           </div>
         </form>
 
@@ -146,13 +256,14 @@ const AdminsAdmin = () => {
                   <th>Name</th>
                   <th>Email</th>
                   <th>Role</th>
+                  <th>Permissions</th>
                   <th>Actions</th>
                 </tr>
               </thead>
               <tbody>
                 {loading && (
                   <tr>
-                    <td colSpan="4" className="text-center py-4">
+                    <td colSpan="5" className="text-center py-4">
                       <div className="spinner-border spinner-border-sm text-primary" />
                     </td>
                   </tr>
@@ -164,6 +275,7 @@ const AdminsAdmin = () => {
                       <td>{admin.name}</td>
                       <td>{admin.email}</td>
                       <td>{admin.role}</td>
+                      <td>{admin.permissions?.length || 0} assigned</td>
                       <td>
                         <button className="btn btn-sm btn-outline-danger" onClick={() => handleDelete(admin._id)}>
                           Delete

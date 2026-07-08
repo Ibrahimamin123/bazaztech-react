@@ -3,6 +3,15 @@ import Swal from "sweetalert2";
 import { FaEdit, FaPlus, FaSearch, FaTrash } from "react-icons/fa";
 import AdminLayout from "../layouts/AdminLayout";
 import { uploadImage } from "../services/adminApi";
+import {
+  collectErrors,
+  hasErrors,
+  validateImageFile,
+  validateMaxLength,
+  validateNumber,
+  validateRequired,
+  validateUrl,
+} from "../../utils/validation";
 
 const CmsManager = ({
   title,
@@ -17,6 +26,7 @@ const CmsManager = ({
   const [showModal, setShowModal] = useState(false);
   const [editItem, setEditItem] = useState(null);
   const [form, setForm] = useState({});
+  const [errors, setErrors] = useState({});
   const [search, setSearch] = useState("");
   const [page, setPage] = useState(1);
   const perPage = 6;
@@ -54,6 +64,7 @@ const CmsManager = ({
   const openCreate = () => {
     setEditItem(null);
     setForm(emptyForm);
+    setErrors({});
     setShowModal(true);
   };
 
@@ -68,35 +79,92 @@ const CmsManager = ({
     });
 
     setForm(nextForm);
+    setErrors({});
     setShowModal(true);
   };
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
     setForm({ ...form, [name]: type === "checkbox" ? checked : value });
+    setErrors((prev) => ({ ...prev, [name]: "" }));
   };
 
   const handleImageUpload = async (e, fieldName) => {
     const file = e.target.files?.[0];
     if (!file) return;
 
+    const fileError = validateImageFile(file, { maxSizeMB: 1 });
+    if (fileError) {
+      setErrors((prev) => ({ ...prev, [fieldName]: fileError }));
+      return;
+    }
+
     try {
       const res = await uploadImage(file);
       setForm((prev) => ({ ...prev, [fieldName]: res.data.imageUrl }));
+      setErrors((prev) => ({ ...prev, [fieldName]: "" }));
     } catch {
-      Swal.fire("Error", "Image upload failed.", "error");
+      setErrors((prev) => ({
+        ...prev,
+        [fieldName]: "Image upload failed. Please upload a valid image up to 1MB.",
+      }));
     }
+  };
+
+  const validateForm = () => {
+    const checks = [];
+
+    fields.forEach((field) => {
+      const value = form[field.name];
+      if (field.required) {
+        checks.push({
+          field: field.name,
+          message: validateRequired(value, field.label),
+        });
+      }
+
+      if (field.type === "number") {
+        checks.push({
+          field: field.name,
+          message: validateNumber(value, field.label, {
+            required: field.required,
+            min: field.min,
+            max: field.max,
+            integer: true,
+          }),
+        });
+      }
+
+      if (field.type === "upload" && value) {
+        checks.push({
+          field: field.name,
+          message: validateUrl(value, `${field.label} URL`),
+        });
+      }
+
+      if (field.url) {
+        checks.push({
+          field: field.name,
+          message: validateUrl(value, field.label, { required: field.required }),
+        });
+      }
+
+      if (field.maxLength) {
+        checks.push({
+          field: field.name,
+          message: validateMaxLength(value, field.maxLength, field.label),
+        });
+      }
+    });
+
+    const nextErrors = collectErrors(checks);
+    setErrors(nextErrors);
+    return !hasErrors(nextErrors);
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    for (const field of fields) {
-      if (field.required && !String(form[field.name] ?? "").trim()) {
-        Swal.fire("Validation Error", `${field.label} is required.`, "warning");
-        return;
-      }
-    }
+    if (!validateForm()) return;
 
     const payload = { ...form };
 
@@ -296,6 +364,7 @@ const CmsManager = ({
                               rows={field.rows || 3}
                               value={form[field.name] || ""}
                               onChange={handleChange}
+                              placeholder={field.placeholder || `Enter ${field.label.toLowerCase()}`}
                               required={field.required}
                             />
                           ) : field.type === "select" ? (
@@ -304,6 +373,7 @@ const CmsManager = ({
                               name={field.name}
                               value={form[field.name] || ""}
                               onChange={handleChange}
+                              required={field.required}
                             >
                               {field.options.map((opt) => (
                                 <option key={opt.value} value={opt.value}>
@@ -328,29 +398,35 @@ const CmsManager = ({
                           ) : field.type === "upload" ? (
                             <>
                               <input
-                                className="form-control mb-2"
-                                name={field.name}
-                                value={form[field.name] || ""}
-                                onChange={handleChange}
-                                placeholder="Image URL"
-                              />
-                              <input
                                 type="file"
-                                className="form-control"
+                                className={`form-control ${errors[field.name] ? "is-invalid" : ""}`}
                                 accept="image/*"
                                 onChange={(e) => handleImageUpload(e, field.name)}
                               />
+                              <small className="text-muted d-block mt-1">
+                                {field.hint || "Supported: JPG, PNG, GIF, WebP, SVG. Maximum file size: 1MB."}
+                              </small>
+                              {form[field.name] && (
+                                <small className="text-success d-block mt-1">Image uploaded successfully.</small>
+                              )}
                             </>
                           ) : (
                             <input
-                              className="form-control"
+                              className={`form-control ${errors[field.name] ? "is-invalid" : ""}`}
                               type={field.type || "text"}
                               name={field.name}
                               value={form[field.name] ?? ""}
                               onChange={handleChange}
+                              min={field.min}
+                              max={field.max}
+                              placeholder={field.placeholder || `Enter ${field.label.toLowerCase()}`}
                               required={field.required}
                             />
                           )}
+                          {errors[field.name] && (
+                            <div className="invalid-feedback d-block">{errors[field.name]}</div>
+                          )}
+                          {field.helpText && <small className="text-muted d-block mt-1">{field.helpText}</small>}
                         </div>
                       ))}
                     </div>

@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import Navbar from "./Navbar";
 import Footer from "./Footer";
+import ConsultationModal from "./ConsultationModal";
 import "../App.css";
 import { getPublicTraining } from "../services/publicApi";
 
@@ -10,6 +11,7 @@ const PLACEHOLDER =
 const CorporateTraining = () => {
   const [trainings, setTrainings] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [showConsultation, setShowConsultation] = useState(false);
 
   useEffect(() => {
     const loadTraining = async () => {
@@ -45,7 +47,9 @@ const CorporateTraining = () => {
                 {hero?.description ||
                   "Empower your workforce with industry-focused training programs designed to improve productivity, innovation, and business growth."}
               </p>
-              <button className="btn corp-btn">Get Free Consultation</button>
+              <button className="btn corp-btn" type="button" onClick={() => setShowConsultation(true)}>
+                Get Free Consultation
+              </button>
             </div>
 
             <div className="col-lg-6 text-center">
@@ -111,6 +115,14 @@ const CorporateTraining = () => {
             {programs.map((program) => (
               <div className="col-md-6 col-lg-4" key={program._id}>
                 <div className="program-card">
+                  <img
+                    src={program.image || PLACEHOLDER}
+                    alt={program.title}
+                    className="img-fluid rounded mb-3"
+                    onError={(e) => {
+                      e.currentTarget.src = PLACEHOLDER;
+                    }}
+                  />
                   <h4>{program.title}</h4>
                   {program.description && <p className="mb-0 mt-2">{program.description}</p>}
                 </div>
@@ -132,6 +144,7 @@ const CorporateTraining = () => {
       </section>
 
       <Footer />
+      <ConsultationModal show={showConsultation} onClose={() => setShowConsultation(false)} />
     </>
   );
 };

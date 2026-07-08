@@ -884,7 +884,7 @@ body {
 
 .custom-modal {
   width: 90%;
-  max-width: 650px;
+  max-width: 760px;
   background: #0f172a;
   border: 1px solid rgba(113, 56, 244, 0.4);
   padding: 40px;
@@ -1914,7 +1914,7 @@ img {
 }
 
 .corp-text {
-  color: #ddd;
+  color: #fff;
   line-height: 1.8;
   margin: 25px 0;
 }
@@ -1970,6 +1970,17 @@ img {
 }
 .program-card h4 {
   margin: 0;
+}
+
+.program-card p {
+  color: #fff;
+}
+
+.consultation-modal .contact-form-card {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(113, 56, 244, 0.2);
+  border-radius: 16px;
+  padding: 20px;
 }
 
 /* CTA */

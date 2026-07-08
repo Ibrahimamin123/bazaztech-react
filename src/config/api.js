@@ -20,11 +20,16 @@ API.interceptors.request.use((config) => {
 API.interceptors.response.use(
   (response) => response,
   (error) => {
-    if (error.response?.status === 401) {
+    const isLoginRequest = error.config?.url?.includes("/admin/login");
+
+    if (error.response?.status === 401 && !isLoginRequest) {
       localStorage.removeItem("token");
       localStorage.removeItem("admin");
 
-      if (window.location.pathname.startsWith("/admin")) {
+      if (
+        window.location.pathname.startsWith("/admin") &&
+        window.location.pathname !== "/admin/login"
+      ) {
         window.location.href = "/admin/login";
       }
     }

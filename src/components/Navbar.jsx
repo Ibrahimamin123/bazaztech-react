@@ -3,9 +3,11 @@ import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import logo from "../images/logo-head.png";
 import WhatsAppButton from "./WhatsAppButton";
+import ConsultationModal from "./ConsultationModal";
 
 const Navbar = () => {
   const [showTraining, setShowTraining] = useState(false);
+  const [showConsultation, setShowConsultation] = useState(false);
 
   return (
     <nav className="navbar navbar-expand-lg navbar-dark custom-navbar fixed-top">
@@ -89,10 +91,14 @@ const Navbar = () => {
           </ul>
 
           <div className="d-flex flex-column flex-lg-row gap-2 mt-3 mt-lg-0">
+            <button type="button" className="btn btn-primary custom-btn" onClick={() => setShowConsultation(true)}>
+              Get Free Consultation
+            </button>
             <WhatsAppButton />
           </div>
         </div>
       </div>
+      <ConsultationModal show={showConsultation} onClose={() => setShowConsultation(false)} />
     </nav>
   );
 };

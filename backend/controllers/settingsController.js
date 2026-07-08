@@ -1,5 +1,5 @@
 import WebsiteSettings from "../models/WebsiteSettings.js";
-import { validateEmail, validatePhone, sanitizeString } from "../utils/validate.js";
+import { validateEmail, validatePhone, sanitizeString, validateRequired } from "../utils/validate.js";
 
 export const getSettings = async (_req, res) => {
   try {
@@ -18,6 +18,12 @@ export const getSettings = async (_req, res) => {
 export const updateSettings = async (req, res) => {
   try {
     const payload = { ...req.body };
+
+    const siteNameCheck = validateRequired(payload.siteName, "Site name", 100);
+    if (!siteNameCheck.valid) {
+      return res.status(400).json({ success: false, message: siteNameCheck.message });
+    }
+    payload.siteName = siteNameCheck.value;
 
     if (payload.email) {
       const emailCheck = validateEmail(payload.email);
@@ -39,7 +45,6 @@ export const updateSettings = async (req, res) => {
       payload.whatsapp = sanitizeString(payload.whatsapp, 30);
     }
 
-    payload.siteName = sanitizeString(payload.siteName, 100);
     payload.tagline = sanitizeString(payload.tagline, 200);
 
     let settings = await WebsiteSettings.findOne();

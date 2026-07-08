@@ -1,5 +1,7 @@
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const PHONE_RE = /^[+]?[\d\s\-()]{7,20}$/;
+const URL_RE =
+  /^(https?:\/\/)([\w-]+\.)+[\w-]{2,}(\/[\w\-./?%&=+#~:]*)?$/i;
 
 export const sanitizeString = (value, maxLength = 500) => {
   if (value === undefined || value === null) return "";
@@ -42,4 +44,42 @@ export const validateRequired = (value, label, maxLength = 200) => {
   const sanitized = sanitizeString(value, maxLength);
   if (!sanitized) return { valid: false, message: `${label} is required.`, value: "" };
   return { valid: true, value: sanitized };
+};
+
+export const validateUrl = (value, label = "URL", { required = false } = {}) => {
+  const sanitized = sanitizeString(value, 500);
+  if (!sanitized) {
+    return required
+      ? { valid: false, message: `${label} is required.`, value: "" }
+      : { valid: true, value: "" };
+  }
+  if (!URL_RE.test(sanitized)) {
+    return { valid: false, message: `Invalid ${label.toLowerCase()}.`, value: sanitized };
+  }
+  return { valid: true, value: sanitized };
+};
+
+export const validateNumber = (
+  value,
+  label = "Value",
+  { required = false, min, max, integer = false } = {}
+) => {
+  if (value === undefined || value === null || value === "") {
+    return required
+      ? { valid: false, message: `${label} is required.` }
+      : { valid: true };
+  }
+
+  const parsed = Number(value);
+  if (Number.isNaN(parsed)) return { valid: false, message: `${label} must be numeric.` };
+  if (integer && !Number.isInteger(parsed)) {
+    return { valid: false, message: `${label} must be a whole number.` };
+  }
+  if (min !== undefined && parsed < min) {
+    return { valid: false, message: `${label} must be at least ${min}.` };
+  }
+  if (max !== undefined && parsed > max) {
+    return { valid: false, message: `${label} must be ${max} or less.` };
+  }
+  return { valid: true, value: parsed };
 };

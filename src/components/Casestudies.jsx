@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import Navbar from "./Navbar";
 import Footer from "./Footer";
-import WhatsAppButton from "./WhatsAppButton";
+import ConsultationModal from "./ConsultationModal";
 import "../App.css";
 import { getPublicCaseStudies } from "../services/publicApi";
 
@@ -12,6 +12,7 @@ const PLACEHOLDER =
 const CaseStudies = () => {
   const [caseStudies, setCaseStudies] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [showConsultation, setShowConsultation] = useState(false);
 
   useEffect(() => {
     const loadCaseStudies = async () => {
@@ -116,11 +117,14 @@ const CaseStudies = () => {
         <div className="container text-center">
           <h2>Ready To Become Our Next Success Story?</h2>
           <p>Let&apos;s build innovative digital solutions that drive real business growth.</p>
-          <WhatsAppButton>Get Free Consultation</WhatsAppButton>
+          <button className="btn btn-primary" type="button" onClick={() => setShowConsultation(true)}>
+            Get Free Consultation
+          </button>
         </div>
       </motion.section>
 
       <Footer />
+      <ConsultationModal show={showConsultation} onClose={() => setShowConsultation(false)} />
     </>
   );
 };

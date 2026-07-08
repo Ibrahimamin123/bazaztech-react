@@ -8,6 +8,8 @@ import {
   collectErrors,
   hasErrors,
   validateEmail,
+  validateImageFile,
+  validateMaxLength,
   validatePhone,
   validateRequired,
 } from "../../utils/validation";
@@ -52,10 +54,16 @@ const SettingsAdmin = () => {
   const handleLogoUpload = async (e) => {
     const file = e.target.files?.[0];
     if (!file) return;
+    const fileError = validateImageFile(file, { maxSizeMB: 1 });
+    if (fileError) {
+      setErrors((prev) => ({ ...prev, logo: fileError }));
+      return;
+    }
 
     try {
       const res = await uploadImage(file);
       setForm((prev) => ({ ...prev, logo: res.data.imageUrl }));
+      setErrors((prev) => ({ ...prev, logo: "" }));
     } catch {
       Swal.fire("Error", "Logo upload failed.", "error");
     }
@@ -68,6 +76,10 @@ const SettingsAdmin = () => {
       { field: "siteName", message: validateRequired(form.siteName, "Site name") },
       { field: "email", message: validateEmail(form.email) },
       { field: "phone", message: validatePhone(form.phone) },
+      { field: "siteName", message: validateMaxLength(form.siteName, 120, "Site name") },
+      { field: "tagline", message: validateMaxLength(form.tagline, 200, "Tagline") },
+      { field: "address", message: validateMaxLength(form.address, 500, "Address") },
+      { field: "footerText", message: validateMaxLength(form.footerText, 500, "Footer text") },
     ]);
 
     setErrors(nextErrors);
@@ -109,6 +121,7 @@ const SettingsAdmin = () => {
                 name="siteName"
                 value={form.siteName}
                 onChange={handleChange}
+                placeholder="Your website name"
               />
               {errors.siteName && (
                 <div className="invalid-feedback d-block">{errors.siteName}</div>
@@ -116,11 +129,14 @@ const SettingsAdmin = () => {
             </div>
             <div className="col-md-6">
               <label className="form-label">Tagline</label>
-              <input className="form-control" name="tagline" value={form.tagline} onChange={handleChange} />
+              <input className={`form-control ${errors.tagline ? "is-invalid" : ""}`} name="tagline" value={form.tagline} onChange={handleChange} placeholder="Short website tagline" />
+              {errors.tagline && <div className="invalid-feedback d-block">{errors.tagline}</div>}
             </div>
             <div className="col-md-4">
               <label className="form-label">Upload Logo</label>
-              <input type="file" className="form-control" accept="image/*" onChange={handleLogoUpload} />
+              <input type="file" className={`form-control ${errors.logo ? "is-invalid" : ""}`} accept="image/*" onChange={handleLogoUpload} />
+              <small className="text-muted d-block mt-1">Supported: JPG/PNG/GIF/WebP/SVG, max 1MB.</small>
+              {errors.logo && <div className="invalid-feedback d-block">{errors.logo}</div>}
             </div>
             <div className="col-md-6">
               <label className="form-label">Email</label>
@@ -129,6 +145,7 @@ const SettingsAdmin = () => {
                 name="email"
                 value={form.email}
                 onChange={handleChange}
+                placeholder="contact@yourdomain.com"
               />
               {errors.email && <div className="invalid-feedback d-block">{errors.email}</div>}
             </div>
@@ -139,6 +156,7 @@ const SettingsAdmin = () => {
                 name="phone"
                 value={form.phone}
                 onChange={handleChange}
+                placeholder="+92 300 0000000"
               />
               {errors.phone && <div className="invalid-feedback d-block">{errors.phone}</div>}
             </div>
@@ -150,7 +168,9 @@ const SettingsAdmin = () => {
                 name="address"
                 value={form.address}
                 onChange={handleChange}
+                placeholder="Business address"
               />
+              {errors.address && <div className="invalid-feedback d-block">{errors.address}</div>}
             </div>
             <div className="col-12">
               <label className="form-label">Footer About Text</label>
@@ -160,11 +180,13 @@ const SettingsAdmin = () => {
                 name="footerText"
                 value={form.footerText}
                 onChange={handleChange}
+                placeholder="Footer about text"
               />
+              {errors.footerText && <div className="invalid-feedback d-block">{errors.footerText}</div>}
             </div>
             <div className="col-md-6">
               <label className="form-label">Copyright</label>
-              <input className="form-control" name="copyright" value={form.copyright} onChange={handleChange} />
+              <input className="form-control" name="copyright" value={form.copyright} onChange={handleChange} placeholder="Copyright statement" />
             </div>
             <div className="col-md-6">
               <label className="form-label">WhatsApp Number</label>

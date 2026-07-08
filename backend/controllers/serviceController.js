@@ -1,7 +1,30 @@
 import Service from "../models/service.js";
+import { validateRequired, validateUrl } from "../utils/validate.js";
+
+const validateServicePayload = (payload, { partial = false } = {}) => {
+  if (!partial || payload.title !== undefined) {
+    const title = validateRequired(payload.title, "Title", 120);
+    if (!title.valid) return title;
+  }
+  if (!partial || payload.description !== undefined) {
+    const description = validateRequired(payload.description, "Description", 1200);
+    if (!description.valid) return description;
+  }
+  if (!partial || payload.image !== undefined) {
+    const image = validateRequired(payload.image, "Image", 500);
+    if (!image.valid) return image;
+    const imageUrl = validateUrl(image.value, "Image URL", { required: true });
+    if (!imageUrl.valid) return imageUrl;
+  }
+  return { valid: true };
+};
 
 export const addService = async (req, res) => {
   try {
+    const validation = validateServicePayload(req.body);
+    if (!validation.valid) {
+      return res.status(400).json({ success: false, message: validation.message });
+    }
     const service = await Service.create(req.body);
 
     res.status(201).json({
@@ -36,6 +59,10 @@ export const getPublicServices = async (_req, res) => {
 
 export const updateService = async (req, res) => {
   try {
+    const validation = validateServicePayload(req.body, { partial: true });
+    if (!validation.valid) {
+      return res.status(400).json({ success: false, message: validation.message });
+    }
     const service = await Service.findByIdAndUpdate(req.params.id, req.body, {
       new: true,
       runValidators: true,
