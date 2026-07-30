@@ -1,0 +1,231 @@
+import { useEffect, useState } from "react";
+import Swal from "sweetalert2";
+import { addService, updateService } from "../services/serviceApi";
+import { uploadImage } from "../services/adminApi";
+import {
+  collectErrors,
+  hasErrors,
+  validateImageFile,
+  validateMaxLength,
+  validateRequired,
+} from "../../utils/validation";
+
+const emptyForm = {
+  title: "",
+  description: "",
+  icon: "",
+  image: "",
+  features: "",
+  status: true,
+};
+
+const ServiceModal = ({ show, onClose, refreshServices, editData }) => {
+  const [form, setForm] = useState(emptyForm);
+  const [saving, setSaving] = useState(false);
+  const [uploading, setUploading] = useState(false);
+  const [errors, setErrors] = useState({});
+
+  useEffect(() => {
+    if (editData) {
+      setForm({
+        title: editData.title || "",
+        description: editData.description || "",
+        icon: editData.icon || "",
+        image: editData.image || "",
+        features: (editData.features || []).join(", "),
+        status: editData.status ?? true,
+      });
+    } else {
+      setForm(emptyForm);
+    }
+    setErrors({});
+  }, [editData, show]);
+
+  if (!show) return null;
+
+  const handleChange = (e) => {
+    const { name, value, type, checked } = e.target;
+    setForm({ ...form, [name]: type === "checkbox" ? checked : value });
+    setErrors((prev) => ({ ...prev, [name]: "" }));
+  };
+
+  const handleImageUpload = async (e) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    const fileError = validateImageFile(file, { maxSizeMB: 1 });
+    if (fileError) {
+      setErrors((prev) => ({ ...prev, image: fileError }));
+      return;
+    }
+
+    try {
+      setUploading(true);
+      const res = await uploadImage(file);
+      setForm((prev) => ({ ...prev, image: res.data.imageUrl }));
+      setErrors((prev) => ({ ...prev, image: "" }));
+      Swal.fire({
+        icon: "success",
+        title: "Uploaded",
+        text: "Image uploaded successfully.",
+        timer: 1500,
+        showConfirmButton: false,
+      });
+    } catch {
+      Swal.fire("Error", "Image upload failed.", "error");
+    } finally {
+      setUploading(false);
+    }
+  };
+
+  const validateForm = () => {
+    const nextErrors = collectErrors([
+      { field: "title", message: validateRequired(form.title, "Title") },
+      { field: "description", message: validateRequired(form.description, "Description") },
+      { field: "image", message: validateRequired(form.image, "Image") },
+      { field: "title", message: validateMaxLength(form.title, 120, "Title") },
+      { field: "description", message: validateMaxLength(form.description, 1200, "Description") },
+    ]);
+    setErrors(nextErrors);
+    return !hasErrors(nextErrors);
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (!validateForm()) return;
+
+    const payload = {
+      title: form.title,
+      description: form.description,
+      icon: form.icon,
+      image: form.image,
+      status: form.status,
+      features: form.features
+        .split(",")
+        .map((item) => item.trim())
+        .filter(Boolean),
+    };
+
+    try {
+      setSaving(true);
+
+      if (editData?._id) {
+        await updateService(editData._id, payload);
+      } else {
+        await addService(payload);
+      }
+
+      await refreshServices();
+      onClose();
+
+      Swal.fire({
+        icon: "success",
+        title: editData ? "Updated" : "Created",
+        text: `Service ${editData ? "updated" : "added"} successfully.`,
+        timer: 1600,
+        showConfirmButton: false,
+      });
+    } catch (err) {
+      Swal.fire(
+        "Error",
+        err.response?.data?.message || "Something went wrong.",
+        "error"
+      );
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  return (
+    <div className="modal d-block admin-modal-backdrop">
+      <div className="modal-dialog modal-lg modal-dialog-centered">
+        <div className="modal-content">
+          <div className="modal-header">
+            <h5>{editData ? "Edit Service" : "Add Service"}</h5>
+            <button type="button" className="btn-close" onClick={onClose} />
+          </div>
+
+          <form onSubmit={handleSubmit}>
+            <div className="modal-body">
+              <div className="row g-3">
+                <div className="col-md-12">
+                  <label className="form-label">Title</label>
+                  <input
+                    className={`form-control ${errors.title ? "is-invalid" : ""}`}
+                    name="title"
+                    value={form.title}
+                    onChange={handleChange}
+                    placeholder="Enter service title"
+                  />
+                  {errors.title && <div className="invalid-feedback d-block">{errors.title}</div>}
+                </div>
+
+            
+                <div className="col-12">
+                  <label className="form-label">Description</label>
+                  <textarea
+                    className={`form-control ${errors.description ? "is-invalid" : ""}`}
+                    name="description"
+                    rows="4"
+                    value={form.description}
+                    onChange={handleChange}
+                    placeholder="Describe the service and value proposition"
+                  />
+                  {errors.description && <div className="invalid-feedback d-block">{errors.description}</div>}
+                </div>
+
+            
+
+                <div className="col-md-4">
+                  <label className="form-label">Upload Image</label>
+                  <input
+                    type="file"
+                    className={`form-control ${errors.image ? "is-invalid" : ""}`}
+                    accept="image/*"
+                    onChange={handleImageUpload}
+                    disabled={uploading}
+                  />
+                  <small className="text-muted d-block mt-1">Supported: JPG/PNG/GIF/WebP/SVG, max 1MB.</small>
+                  {errors.image && <div className="invalid-feedback d-block">{errors.image}</div>}
+                </div>
+
+                {form.image && (
+                  <div className="col-12">
+                    <img src={form.image} alt="Preview" className="modal-preview" />
+                  </div>
+                )}
+
+         
+                <div className="col-12">
+                  <div className="form-check">
+                    <input
+                      type="checkbox"
+                      className="form-check-input"
+                      name="status"
+                      checked={form.status}
+                      onChange={handleChange}
+                      id="serviceStatus"
+                    />
+                    <label className="form-check-label" htmlFor="serviceStatus">
+                      Active on website
+                    </label>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="modal-footer">
+              <button type="button" className="btn btn-secondary" onClick={onClose}>
+                Cancel
+              </button>
+              <button type="submit" className="btn btn-primary" disabled={saving}>
+                {saving ? "Saving..." : editData ? "Update Service" : "Save Service"}
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default ServiceModal;
