@@ -3,7 +3,7 @@ import { trainingApi } from "../services/cmsApi";
 
 const TrainingAdmin = () => (
   <CmsManager
-    title="Corporate Training"
+    title="Training Programs"
     subtitle="Manage training programs shown on the Corporate Training page."
     api={trainingApi}
     dataKey="trainings"
@@ -18,12 +18,6 @@ const TrainingAdmin = () => (
         type: "upload",
         required: true,
         hint: "Maximum File Size: 1 MB\nRecommended Dimensions: 1200 × 800 px\nWidth: 1200 px\nHeight: 800 px",
-      },
-      {
-        name: "additionalImages",
-        label: "Additional Images",
-        type: "multiupload",
-        hint: "Maximum File Size: 1 MB each\nRecommended Dimensions: 1200 × 800 px\nWidth: 1200 px\nHeight: 800 px",
       },
       { name: "status", label: "Status", type: "checkbox", checkboxLabel: "Active" },
     ]}

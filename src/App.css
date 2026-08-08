@@ -517,7 +517,26 @@ h6 {
 }
 
 .trust-section h2 {
+   font-size: 3rem;
+  font-weight: 800;
   color: #fff;
+  animation: fadeDown 1s ease;
+   
+}
+@media (max-width: 576px) {
+  .trust-section h2 {
+    font-size: 1.8rem !important;  /* Chhota screen pe chhota font */
+
+    text-align: center !important;
+    letter-spacing: 0.5px;  /* Thori spacing, readable */
+  }
+}
+
+@media (max-width: 375px) {
+  .winning-title {
+    font-size: 1rem !important;  /* Very small screens */
+    letter-spacing: 0.3px;
+  }
 }
 
 /* Card */
@@ -586,21 +605,13 @@ h6 {
 }
 .project-section {
   /* background: linear-gradient(135deg, #0f172a, #111827); */
-  background-color: black;
+ background: linear-gradient(180deg, #000, #22173b, #7a42f3) !important;
   padding: 100px 20px;
   position: relative;
   overflow: hidden;
 }
 
-/* Animated Background Circles */
-.project-section::before,
-.project-section::after {
-  content: "";
-  position: absolute;
-  border-radius: 50%;
-  background: rgba(59, 130, 246, 0.12);
-  animation: float 8s infinite ease-in-out;
-}
+
 
 .project-section::before {
   width: 250px;
@@ -618,11 +629,10 @@ h6 {
 }
 
 .project-title {
-  color: #fff !important;
   font-size: 3rem;
-  font-weight: 700;
-  margin-bottom: 20px;
-  animation: fadeUp 1s ease;
+  font-weight: 800;
+  color: #fff;
+  animation: fadeDown 1s ease;
 }
 
 
@@ -689,13 +699,28 @@ h6 {
 }
 
 .winning-title {
-  color: #fff !important;
   font-size: 3rem;
-  font-weight: 700;
-  margin-bottom: 20px;
-  animation: slideUp 1s ease;
+  font-weight: 800;
+  color: #fff;
+  animation: fadeDown 1s ease;
+   white-space: nowrap; 
+}
+  
+@media (max-width: 576px) {
+  .winning-title {
+    font-size: 2rem !important;  /* Chhota screen pe chhota font */
+    white-space: nowrap !important; /* Ek line mein hi rahega */
+    text-align: center !important;
+    letter-spacing: 0.5px;  /* Thori spacing, readable */
+  }
 }
 
+@media (max-width: 375px) {
+  .winning-title {
+    font-size: 1.8rem !important;  /* Very small screens */
+    letter-spacing: 0.3px;
+  }
+}
 .winning-desc {
   color: #cbd5e1;
   font-size: 1.05rem;
@@ -1174,7 +1199,8 @@ h6 {
   }
 
   .stat-card-split {
-    min-height: 135px;
+    min-height: 50px !important;
+    width: 170px !important;
     padding: 12px 8px;
     border-radius: 14px;
   }
@@ -1200,7 +1226,89 @@ h6 {
     display: block;
   }
 }
+/* =========================
+   HERO STAT CARDS - MOBILE FIX (SIRF 2 CARDS PER ROW + HEIGHT KAM)
+========================= */
+@media (max-width: 576px) {
+  .hero .row.g-2.g-md-3 {
+    display: flex !important;
+    flex-wrap: wrap !important;
+    row-gap: 6px !important;       /* Row ke beech gap */
+    column-gap: 0px !important;    /* ❌ Column gap BILKUL KHATAM */
+    margin: 0 !important;
+    justify-content: center !important;
+  }
 
+  .hero .col-6 {
+    flex: 0 0 50% !important;
+    max-width: 50% !important;
+    padding: 0 0px !important;     /* ❌ Padding BILKUL KHATAM */
+  }
+
+  .stat-card-split {
+    min-height: 30px !important;
+    height: 70px !important;
+    width: 90% !important;          /* Width 90% (thodi spacing) */
+    padding: 4px 6px !important;
+    border-radius: 8px !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 4px !important;
+    margin: 0 auto !important;      /* Center me */
+  }
+
+  /* Icon area */
+  .stat-card-icon-area {
+    min-height: 32px !important;
+    min-width: 32px !important;
+    flex-shrink: 0 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+  }
+
+  .stat-card-image,
+  .stat-card-icon svg {
+    width: 60px !important;
+    height: 60px !important;
+    max-height: 18px !important;
+  }
+
+  /* Stars (rating wale) */
+  .stat-card-icon-area .text-warning {
+    font-size: 14px !important;
+  }
+  
+  .stat-card-icon-area .text-warning svg {
+    width: 14px !important;
+    height: 14px !important;
+  }
+
+
+  /* Text area */
+  .stat-card-text-area {
+    flex: 1 !important;
+    min-width: 0 !important;
+    padding: 0 2px !important;
+    border-top: none !important;
+  }
+
+  .stat-card-text-area h4 {
+    font-size: 0.75rem !important;
+    margin-bottom: 1px !important;
+    line-height: 1.2 !important;
+    font-weight: 600 !important;
+    color: #fff !important;
+  }
+
+  .stat-card-text-area small {
+    font-size: 0.6rem !important;
+    line-height: 1.1 !important;
+    display: block !important;
+    opacity: 0.7 !important;
+    color: #ccc !important;
+  }
+}
 .sub-text {
   display: block;
   margin-top: 10px;
@@ -1420,47 +1528,86 @@ h6 {
   padding: 120px 0;
 }
 
-/* Hero section specific styles */
+/* Hero section - Desktop */
 .services-hero {
-  padding: 60px 0 40px 0 !important; /* Top padding reduce kiya */
-    background: linear-gradient(180deg, #000000, #16151d, #38275e) !important;
+  padding: 30px 0 30px 0 !important;
+  background: linear-gradient(180deg, #000000, #16151d, #38275e) !important;
+  min-height: 40vh !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 100% !important;
 }
 
 .services-hero .container {
-  min-height: 60vh;
-  text-align: center;
-  padding-top: 20px !important;
-  padding-bottom: 20px !important;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
- 
+  width: 100% !important;
+  max-width: 1200px !important;
+  text-align: center !important;
+  padding: 10px 20px !important;
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: center !important;
+  align-items: center !important;
+  margin: 0 auto !important;
 }
+
 .services-hero h1 {
-  margin-bottom: 10px !important; /* Headings ke beech ka gap kam kiya */
+  margin-bottom: 8px !important;
   line-height: 1.3 !important;
+  text-align: center !important;
+  color: #fff !important;
+  max-width: 800px !important;
 }
 
 .services-hero .services-subtitle {
-  margin-top: 15px !important;
+  margin-top: 8px !important;
+  margin-bottom: 8px !important;
+  text-align: center !important;
+  color: rgba(255,255,255,0.8) !important;
+  max-width: 700px !important;
 }
 
-/* Mobile responsive fixes */
-@media (max-width: 768px) {
+.services-hero .whatsapp-btn {
+  margin-top: 6px !important;
+}
+
+/* ✅ DESKTOP VIEW (992px and above) */
+@media (min-width: 992px) {
   .services-hero {
-    padding: 40px 0 30px 0 !important;
+    min-height: 50vh !important;
+    padding: 30px 0 30px 0 !important;
+  }
+  
+  .services-hero .container {
+    padding: 15px 20px !important;
+    justify-content: center !important;
   }
   
   .services-hero h1 {
-    font-size: 1.8rem !important; /* Mobile pe chota font */
-    white-space: normal !important; /* Text wrap hone de */
-    margin-bottom: 8px !important;
-    line-height: 1.2 !important;
+    font-size: 2.8rem !important;
+    margin-bottom: 12px !important;
   }
   
-  .services-hero .display-4 {
-    font-size: 1.8rem !important;
+  .services-hero .services-subtitle {
+    font-size: 1.1rem !important;
+  }
+}
+
+/* ✅ TABLET VIEW (768px - 991px) */
+@media (max-width: 991px) {
+  .services-hero {
+    min-height: 35vh !important;
+    padding: 20px 0 20px 0 !important;
+  }
+  
+  .services-hero .container {
+    padding: 10px 20px !important;
+    justify-content: center !important;
+  }
+  
+  .services-hero h1 {
+    font-size: 2rem !important;
+    margin-bottom: 6px !important;
   }
   
   .services-hero .services-subtitle {
@@ -1468,20 +1615,162 @@ h6 {
     padding: 0 15px !important;
   }
   
-  .services-heading h1 {
-    font-size: 2rem;
-  }
-
-  .service-content h2 {
-    font-size: 1.6rem;
-  }
-
-  .service-row {
-    margin-bottom: 60px;
+  .services-hero .whatsapp-btn {
+    padding: 8px 20px !important;
+    font-size: 0.85rem !important;
   }
 }
 
-/* Existing styles continue below... */
+/* ✅ MOBILE VIEW (576px - 767px) - Text Uper Le Jaao */
+@media (max-width: 767px) {
+  .services-hero {
+    min-height: auto !important;
+    padding: 10px 0 15px 0 !important;
+    align-items: flex-start !important;  /* ✅ Uper se start */
+    padding-top: 20px !important;        /* ✅ Thora sa top padding */
+  }
+  
+  .services-hero .container {
+    padding: 5px 15px !important;
+    justify-content: flex-start !important;  /* ✅ Uper se start */
+    align-items: center !important;
+    min-height: auto !important;
+  }
+  
+  .services-hero h1 {
+    font-size: 1.5rem !important;
+    margin-bottom: 4px !important;
+    line-height: 1.3 !important;
+    margin-top: 0 !important;  /* ✅ Top margin 0 */
+  }
+  
+  .services-hero .services-subtitle {
+    font-size: 0.85rem !important;
+    padding: 0 10px !important;
+    margin-top: 4px !important;
+    margin-bottom: 6px !important;
+  }
+  
+  .services-hero .whatsapp-btn {
+    padding: 6px 16px !important;
+    font-size: 0.8rem !important;
+    margin-top: 4px !important;
+  }
+}
+
+/* ✅ SMALL MOBILE (480px - 575px) - Text Uper */
+@media (max-width: 575px) {
+  .services-hero {
+    min-height: auto !important;
+    padding: 8px 0 12px 0 !important;
+    align-items: flex-start !important;
+    padding-top: 15px !important;
+  }
+  
+  .services-hero .container {
+    padding: 4px 12px !important;
+    justify-content: flex-start !important;
+    min-height: auto !important;
+  }
+  
+  .services-hero h1 {
+    font-size: 1.3rem !important;
+    line-height: 1.3 !important;
+    margin-top: 0 !important;
+  }
+  
+  .services-hero .services-subtitle {
+    font-size: 0.8rem !important;
+    padding: 0 10px !important;
+    margin-top: 3px !important;
+    margin-bottom: 4px !important;
+  }
+  
+  .services-hero .whatsapp-btn {
+    padding: 5px 14px !important;
+    font-size: 0.75rem !important;
+  }
+}
+
+/* ✅ EXTRA SMALL MOBILE (320px - 479px) - Text Uper */
+@media (max-width: 479px) {
+  .services-hero {
+    min-height: auto !important;
+    padding: 5px 0 10px 0 !important;
+    align-items: flex-start !important;
+    padding-top: 12px !important;
+  }
+  
+  .services-hero .container {
+    padding: 3px 10px !important;
+    justify-content: flex-start !important;
+    min-height: auto !important;
+  }
+  
+  .services-hero h1 {
+    font-size: 1.1rem !important;
+    line-height: 1.3 !important;
+    margin-top: 0 !important;
+  }
+  
+  .services-hero .services-subtitle {
+    font-size: 0.7rem !important;
+    padding: 0 8px !important;
+    margin-top: 2px !important;
+    margin-bottom: 4px !important;
+  }
+  
+  .services-hero .whatsapp-btn {
+    padding: 4px 12px !important;
+    font-size: 0.65rem !important;
+  }
+}
+
+/* ✅ Navbar padding - Mobile fix */
+.page-with-navbar {
+  padding-top: 80px !important;
+}
+
+@media (max-width: 991px) {
+  .page-with-navbar {
+    padding-top: 70px !important;
+  }
+}
+
+@media (max-width: 767px) {
+  .page-with-navbar {
+    padding-top: 60px !important;
+  }
+}
+
+@media (max-width: 575px) {
+  .page-with-navbar {
+    padding-top: 55px !important;
+  }
+}
+
+@media (max-width: 479px) {
+  .page-with-navbar {
+    padding-top: 50px !important;
+  }
+}
+@media (max-width:320px) {
+  .services-hero .container {
+    padding-bottom: 80px !important;
+  }
+}
+@media (max-width:375px) {
+  .services-hero .container {
+    padding-bottom: 80px !important;
+  }
+}
+@media (max-width:425px) {
+  .services-hero .container {
+    padding-bottom: 80px !important;
+  }
+}
+
+/* Services Heading */
 .services-heading {
   margin-bottom: 100px;
 }
@@ -1492,65 +1781,12 @@ h6 {
   font-weight: 700;
   margin-bottom: 15px;
 }
-/* Navbar ki wajah se jo space aa rahi hai usko handle karein */
-.page-with-navbar {
-  padding-top: 80px !important; /* Sirf navbar ke liye space */
-}
-
-.services-hero {
-  padding: 20px 0 40px 0 !important; /* Top padding aur kam kiya */
-}
-
-.services-hero .container {
-  padding-top: 10px !important;
-  padding-bottom: 10px !important;
-}
-@media (max-width: 768px) {
-  .page-with-navbar {
-    padding-top: 70px !important;
-  }
-  
-  .services-hero {
-    padding: 10px 0 30px 0 !important;
-  }
-  
-  .services-hero h1 {
-    font-size: 1.6rem !important;
-    white-space: normal !important;
-    margin-bottom: 8px !important;
-    line-height: 1.3 !important;
-  }
-  
-  .services-hero .display-4 {
-    font-size: 1.6rem !important;
-  }
-  
-  .services-hero .services-subtitle {
-    font-size: 0.95rem !important;
-    padding: 0 15px !important;
-  }
-}
-
-/* Small mobile screens (375px - 480px) */
-@media (max-width: 480px) {
-  .services-hero h1,
-  .services-hero .display-4 {
-    font-size: 1.3rem !important;
-    line-height: 1.4 !important;
-    max-width: 280px !important;
-    margin-left: auto !important;
-    margin-right: auto !important;
-  }
-  
-  .services-hero .services-subtitle {
-    font-size: 0.85rem !important;
-  }
-}
 /* Individual Solutions Section */
 .individual-solutions-section {
   padding: 80px 0 60px 0;
   max-width: 1200px;
   margin: 0 auto;
+  overflow-x: hidden;
 }
 
 .section-header {
@@ -1608,7 +1844,7 @@ h6 {
   }
 }
 
-/* Mobile */
+/* ✅ MOBILE VIEW - 1 CARD PER ROW + Left/Right Space */
 @media (max-width: 480px) {
   .individual-solutions-section {
     padding: 50px 0 30px 0;
@@ -1616,11 +1852,13 @@ h6 {
   
   .section-header {
     margin-bottom: 25px;
+    padding: 0 20px;
   }
   
   .section-main-heading {
     font-size: 1.5rem;
-    white-space: nowrap;  /* Ek line mein force karein */
+    white-space: normal;
+    word-break: break-word;
   }
   
   .section-sub-text {
@@ -1628,23 +1866,133 @@ h6 {
     padding: 0 15px;
   }
   
+  /* ✅ 1 card per row */
   .content-card-grid {
-    grid-template-columns: 1fr;
-    gap: 20px;
-    padding: 0 15px;
+    display: grid !important;
+    grid-template-columns: 1fr !important;  /* ✅ 1 column = 1 card per row */
+    gap: 16px !important;
+    padding: 0 16px !important;
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+  
+  .content-card {
+    margin: 0 auto !important;
+    border-radius: 12px;
+    overflow: hidden;
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+  
+  .content-card-body {
+    padding: 14px 16px !important;
+  }
+  
+  .content-card-image {
+    height: 160px !important;
+    width: 100% !important;
+  }
+  
+  .content-card-image img {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+  }
+  
+  .content-card-title {
+    font-size: 1rem !important;
+    margin-bottom: 6px !important;
+  }
+  
+  .content-card-desc {
+    font-size: 0.85rem !important;
+    -webkit-line-clamp: 3 !important;
+    line-clamp: 3 !important;
+    margin-bottom: 12px !important;
+  }
+  
+  .content-card-btn {
+    padding: 8px 18px !important;
+    font-size: 0.8rem !important;
   }
 }
 
-/* Small mobile screens (375px) */
+/* ✅ Small mobile (375px) */
 @media (max-width: 375px) {
+  .individual-solutions-section {
+    padding: 40px 0 20px 0;
+  }
+  
+  .section-header {
+    padding: 0 16px;
+  }
+  
   .section-main-heading {
     font-size: 1.3rem;
-    white-space: nowrap;
   }
   
   .section-sub-text {
     font-size: 0.8rem;
     padding: 0 10px;
+  }
+  
+  .content-card-grid {
+    gap: 14px !important;
+    padding: 0 14px !important;
+  }
+  
+  .content-card-body {
+    padding: 12px 14px !important;
+  }
+  
+  .content-card-image {
+    height: 140px !important;
+  }
+  
+  .content-card-title {
+    font-size: 0.9rem !important;
+  }
+  
+  .content-card-desc {
+    font-size: 0.8rem !important;
+    -webkit-line-clamp: 2 !important;
+    line-clamp: 2 !important;
+  }
+  
+  .content-card-btn {
+    padding: 6px 16px !important;
+    font-size: 0.75rem !important;
+  }
+}
+
+/* ✅ Very small (320px) */
+@media (max-width: 320px) {
+  .content-card-grid {
+    gap: 12px !important;
+    padding: 0 12px !important;
+  }
+  
+  .content-card-body {
+    padding: 10px 12px !important;
+  }
+  
+  .content-card-image {
+    height: 120px !important;
+  }
+  
+  .content-card-title {
+    font-size: 0.8rem !important;
+  }
+  
+  .content-card-desc {
+    font-size: 0.7rem !important;
+    -webkit-line-clamp: 2 !important;
+    line-clamp: 2 !important;
+  }
+  
+  .content-card-btn {
+    padding: 5px 14px !important;
+    font-size: 0.7rem !important;
   }
 }
 /* ... baqi styles */
@@ -2554,11 +2902,10 @@ img {
 }
 
 .program-section h2 {
+   font-size: 3rem;
+  font-weight: 800;
   color: #fff;
-  font-size: 3rem;
-  font-weight: 700;
-  margin-bottom: 12px;
-  line-height: 1.2;
+  animation: fadeDown 1s ease;
 }
 
 .program-section p {
@@ -2583,7 +2930,7 @@ img {
   }
   
   .program-section h2 {
-    font-size: 2.2rem;
+    font-size: 2.8rem;
   }
   
   .program-section p {
@@ -2599,7 +2946,7 @@ img {
   }
   
   .program-section h2 {
-    font-size: 1.6rem;
+    font-size: 1.8rem;
     white-space: nowrap;  /* Ek line mein force karein */
   }
   
@@ -2612,7 +2959,7 @@ img {
 /* Small mobile screens (375px) */
 @media (max-width: 375px) {
   .program-section h2 {
-    font-size: 1.4rem;
+    font-size: 2rem;
     white-space: nowrap;
   }
   

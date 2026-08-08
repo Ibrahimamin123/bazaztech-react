@@ -140,7 +140,6 @@ const About = () => {
                       </div>
                     )}
                     <div className="profile-card-info">
-                      <span className="profile-card-badge">{activeItem?.title}</span>
                       {!activeItem?.textOnly && (
                         <>
                           <h3 className="profile-card-name">{activeItem?.name || activeItem?.title}</h3>

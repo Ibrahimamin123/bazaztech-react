@@ -36,8 +36,11 @@ const Footer = () => {
   return (
     <footer className="footer-section">
       <div className="container">
-        <div className="row gy-4">
-          <div className="col-lg-4 col-md-6">
+        {/* ✅ 3 Equal Columns - Desktop */}
+        <div className="row gy-4" style={{ display: 'flex', flexWrap: 'wrap' }}>
+          
+          {/* Column 1 - Logo & About */}
+          <div className="col-lg-4 col-md-6" style={{ flex: '1 1 0', minWidth: '200px' }}>
             {settings?.logo ? (
               <img src={resolveImageSrc(settings.logo)} className="footer-logo" alt="logo" />
             ) : (
@@ -66,26 +69,19 @@ const Footer = () => {
             </div>
           </div>
 
-          <div className="col-lg-2 col-md-6">
+          {/* Column 2 - Quick Links */}
+          <div className="col-lg-4 col-md-6" style={{ flex: '1 1 0', minWidth: '150px' }}>
             <h5 className="footer-title">Quick Links</h5>
             <ul className="footer-links">
-              <li><Link to="/">Home</Link></li>
               <li><Link to="/about">About</Link></li>
               <li><Link to="/services">Services</Link></li>
-              <li><Link to="/contact">Contact</Link></li>
-            </ul>
-          </div>
-
-          <div className="col-lg-3 col-md-6">
-            <h5 className="footer-title">Pages</h5>
-            <ul className="footer-links">
               <li><Link to="/casestudies">Case Studies</Link></li>
               <li><Link to="/corporatetraining">Training</Link></li>
-              <li><Link to="/services">Services</Link></li>
             </ul>
           </div>
 
-          <div className="col-lg-3 col-md-6">
+          {/* Column 3 - Contact */}
+          <div className="col-lg-4 col-md-6" style={{ flex: '1 1 0', minWidth: '200px' }}>
             <h5 className="footer-title">Contact</h5>
             <p className="footer-contact">📧 {settings?.email || "info@bazaztech.com"}</p>
             <p className="footer-contact">📞 {settings?.phone || "+92 327 8445721"}</p>

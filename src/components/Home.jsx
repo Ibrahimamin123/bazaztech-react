@@ -30,26 +30,15 @@ import FounderVideoModal from "../components/FounderVideoModal";
 const HERO_LQIP =
   "data:image/webp;base64,UklGRmwAAABXRUJQVlA4IGAAAACwAwCdASogABIAPuVgpU2pJaOiN/VYASAciWQAtvqAAnZZ+r34wAD+8LZr3gWykdK/ZrZ5YvGMosxkUR3TfPPf9QbfPXSAc7SHxtFvqbQcSWQxENSCYTk9BaJOqenAgAA=";
 
-// Fallback data shown only if the API hasn't returned anything yet (or the
-// admin hasn't added cards). Keeps the homepage from looking empty.
-const fallbackStatsCards = [
-  { _id: "fallback-1", useStars: true, value: "1200+", label: "Happy Clients" },
-  { _id: "fallback-2", title: "Trustpilot", value: "4.9", label: "Rating" },
-  { _id: "fallback-3", title: "Capterra", value: "4.8", label: "Reviews" },
-  { _id: "fallback-4", title: "Projects", value: "500+", label: "Delivered" },
-];
-
-const fallbackFooterCards = [
-  { _id: "fallback-1", value: "10+", label: "Industries Served" },
-  { _id: "fallback-2", value: "100+", label: "Projects Delivered" },
-  { _id: "fallback-3", value: "100%", label: "Client Satisfaction" },
-  { _id: "fallback-4", value: "50+", label: "Professional Team" },
-  { _id: "fallback-5", value: "10 Years", label: "Market Experience" },
-];
+// ✅ EMPTY ARRAY - No fallback cards (static cards hatao)
+const fallbackStatsCards = [];
+const fallbackFooterCards = [];
 
 const Home = () => {
-  const [statsCards, setStatsCards] = useState(fallbackStatsCards);
-  const [footerCards, setFooterCards] = useState(fallbackFooterCards);
+  const [statsCards, setStatsCards] = useState([]);
+  const [footerCards, setFooterCards] = useState([]);
+  const [statsLoading, setStatsLoading] = useState(true);
+  const [footerLoading, setFooterLoading] = useState(true);
   const [showFounderVideo, setShowFounderVideo] = useState(false);
   const [heroLoaded, setHeroLoaded] = useState(false);
   const heroLine1Ref = useRef(null);
@@ -77,22 +66,35 @@ const Home = () => {
   ];
   const [trustedLogos, setTrustedLogos] = useState(fallbackTrustedLogos);
 
+  // ✅ Fetch stats cards - No fallback, only original content
   useEffect(() => {
+    setStatsLoading(true);
     statsCardApi
       .getPublic()
       .then((res) => {
         const cards = res.data?.statsCards || [];
-        if (cards.length) setStatsCards(cards);
+        setStatsCards(cards);
       })
-      .catch(() => {});
+      .catch(() => {
+        setStatsCards([]);
+      })
+      .finally(() => {
+        setStatsLoading(false);
+      });
 
+    setFooterLoading(true);
     footerCardApi
       .getPublic()
       .then((res) => {
         const cards = res.data?.footerCards || [];
-        if (cards.length) setFooterCards(cards);
+        setFooterCards(cards);
       })
-      .catch(() => {});
+      .catch(() => {
+        setFooterCards([]);
+      })
+      .finally(() => {
+        setFooterLoading(false);
+      });
 
     trustedLogoApi
       .getPublic()
@@ -206,7 +208,10 @@ const Home = () => {
             transition: "opacity 0.7s ease",
           }}
         />
-        <div className="container text-center position-relative" style={{ zIndex: 1 }}>
+        <div
+          className="container text-center position-relative"
+          style={{ zIndex: 1 }}
+        >
           {/* CENTER CONTENT */}
           <motion.div
             className="row justify-content-center align-items-center flex-column-reverse flex-lg-row"
@@ -239,69 +244,76 @@ const Home = () => {
                 solutions.
               </p>
 
-              {/* CARDS */}
-              <div className="row g-2 g-md-3 mt-4 justify-content-center">
-                {statsCards.map((item) => {
-                  const imageSrc = resolveImageSrc(item.image);
-                  const CardIcon =
-                    !imageSrc && !item.useStars && item.icon
-                      ? getIconComponent(item.icon)
-                      : null;
-                  return (
-                    <div className="col-6 col-md-3" key={item._id}>
-                      <div className="card bg-dark text-white border-secondary text-center stat-card-split">
-                        <div className="stat-card-icon-area">
-                          {imageSrc ? (
-                            <img
-                              src={imageSrc}
-                              alt={
-                                item.title || item.label || item.value || "Stat"
-                              }
-                              className="stat-card-image"
-                              loading="lazy"
-                              onError={(e) => {
-                                // Retry once against the raw stored URL in case
-                                // the resolved host differs from where the file lives.
-                                const raw = item.image;
-                                if (
-                                  raw &&
-                                  e.currentTarget.dataset.retried !== "1" &&
-                                  raw !== e.currentTarget.src
-                                ) {
-                                  e.currentTarget.dataset.retried = "1";
-                                  e.currentTarget.src = raw.startsWith("http")
-                                    ? raw
-                                    : `${import.meta.env.VITE_API_URL?.replace(/\/api\/?$/, "") || ""}${raw.startsWith("/") ? raw : `/${raw}`}`;
-                                  return;
-                                }
-                                e.currentTarget.style.display = "none";
-                              }}
-                            />
-                          ) : item.useStars ? (
-                            <div className="text-warning">
-                              <FaStar />
-                              <FaStar />
-                              <FaStar />
-                              <FaStar />
-                              <FaStar />
+              {/* ✅ CARDS - Only show when loading is done AND cards exist */}
+              {!statsLoading && statsCards.length > 0 && (
+                <div style={{ marginTop: "20px" }}>
+                  <div className="row g-2 g-md-3 justify-content-center">
+                    {statsCards.map((item) => {
+                      const imageSrc = resolveImageSrc(item.image);
+                      const CardIcon =
+                        !imageSrc && !item.useStars && item.icon
+                          ? getIconComponent(item.icon)
+                          : null;
+                      return (
+                        <div className="col-6 col-md-3" key={item._id}>
+                          <div className="card bg-dark text-white border-secondary text-center stat-card-split">
+                            <div className="stat-card-icon-area">
+                              {imageSrc ? (
+                                <img
+                                  src={imageSrc}
+                                  alt={
+                                    item.title ||
+                                    item.label ||
+                                    item.value ||
+                                    "Stat"
+                                  }
+                                  className="stat-card-image"
+                                  loading="lazy"
+                                  onError={(e) => {
+                                    const raw = item.image;
+                                    if (
+                                      raw &&
+                                      e.currentTarget.dataset.retried !== "1" &&
+                                      raw !== e.currentTarget.src
+                                    ) {
+                                      e.currentTarget.dataset.retried = "1";
+                                      e.currentTarget.src = raw.startsWith(
+                                        "http"
+                                      )
+                                        ? raw
+                                        : `${import.meta.env.VITE_API_URL?.replace(/\/api\/?$/, "") || ""}${raw.startsWith("/") ? raw : `/${raw}`}`;
+                                      return;
+                                    }
+                                    e.currentTarget.style.display = "none";
+                                  }}
+                                />
+                              ) : item.useStars ? (
+                                <div className="text-warning">
+                                  <FaStar />
+                                  <FaStar />
+                                  <FaStar />
+                                  <FaStar />
+                                  <FaStar />
+                                </div>
+                              ) : CardIcon ? (
+                                <div className="stat-card-icon">
+                                  <CardIcon />
+                                </div>
+                              ) : (
+                                item.title && <h5>{item.title}</h5>
+                              )}
                             </div>
-                          ) : CardIcon ? (
-                            <div className="stat-card-icon">
-                              <CardIcon />
+                            <div className="stat-card-text-area">
+                              <h4>{item.value}</h4>
+                              {item.label ? <small>{item.label}</small> : null}
                             </div>
-                          ) : (
-                            item.title && <h5>{item.title}</h5>
-                          )}
+                          </div>
                         </div>
-                        <div className="stat-card-text-area">
-                          <h4>{item.value}</h4>
-                          {item.label ? <small>{item.label}</small> : null}
-                        </div>
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
+                      );
+                    })}
+                  </div>
+                </div>
+              )}
 
               {/* FOUNDER CTA */}
               <button
@@ -330,7 +342,7 @@ const Home = () => {
 
       <section className="trust-section py-5 text-white">
         <div className="container text-center">
-          <h2 className="fw-bold">Trusted by Happy Customers</h2>
+          <h2>Trusted by Happy Customers</h2>
 
           <p className="text-light mb-5">
             Top Businesses & Brands trust BazazTech for their biggest projects
@@ -389,39 +401,42 @@ const Home = () => {
                 help build your business online? If so, make contact with us
                 today...
               </p>
-
-              <button className="btn project-btn">Get A Quote</button>
             </div>
           </div>
         </div>
       </section>
-      <section className="winning-section">
-        <div className="container">
-          <div className="row justify-content-center text-center">
-            <div className="col-lg-8">
-              <h2 className="winning-title">Our Winning Deeds</h2>
 
-              <p className="winning-desc">
-                Our success is anchored by our skilled team, extensive
-                experience, in-depth technical understanding, focused goal
-                setting, and the positive impact we have on our diverse customer
-                base through their satisfaction.
-              </p>
-            </div>
-          </div>
+      {/* ✅ WINNING DEEDS - Only show when loading is done AND cards exist */}
+      {!footerLoading && footerCards.length > 0 && (
+        <section className="winning-section">
+          <div className="container">
+            <div className="row justify-content-center text-center">
+              <div className="col-lg-8">
+                <h2 className="winning-title">Our Winning Deeds</h2>
 
-          <div className="row g-4 mt-4 justify-content-center">
-            {footerCards.map((item) => (
-              <div className="col-6 col-md-4 col-lg-2" key={item._id}>
-                <div className="stat-box">
-                  <h3>{item.value}</h3>
-                  <span>{item.label}</span>
-                </div>
+                <p className="winning-desc">
+                  Our success is anchored by our skilled team, extensive
+                  experience, in-depth technical understanding, focused goal
+                  setting, and the positive impact we have on our diverse
+                  customer base through their satisfaction.
+                </p>
               </div>
-            ))}
+            </div>
+
+            <div className="row g-4 mt-4 justify-content-center">
+              {footerCards.map((item) => (
+                <div className="col-6 col-md-4 col-lg-2" key={item._id}>
+                  <div className="stat-box">
+                    <h3>{item.value}</h3>
+                    <span>{item.label}</span>
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
+      )}
+
       <Footer />
     </>
   );
