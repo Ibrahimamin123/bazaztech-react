@@ -825,7 +825,6 @@ h6 {
     padding: 25px 10px;
   }
 }
-
 .footer-section {
   background: #000;
   padding: 70px 0 25px;
@@ -834,6 +833,12 @@ h6 {
 
 .footer-logo {
   height: 55px;
+}
+
+.footer-brand {
+  color: #fff;
+  font-weight: 700;
+  font-size: 24px;
 }
 
 .footer-text {
@@ -852,9 +857,7 @@ h6 {
   content: "";
   width: 45px;
   height: 3px;
-  background: linear-gradient(90deg,
-      #3117b9,
-      #7138f4);
+  background: linear-gradient(90deg, #3117b9, #7138f4);
   display: block;
   margin-top: 8px;
   border-radius: 20px;
@@ -882,6 +885,7 @@ h6 {
 
 .footer-contact {
   color: #cfcfcf;
+  margin-bottom: 10px;
 }
 
 .footer-divider {
@@ -893,30 +897,16 @@ h6 {
   color: #999;
 }
 
-/* Mobile */
-
-@media (max-width: 768px) {
-  .footer-section {
-    text-align: center;
-  }
-
-  .footer-title::after {
-    margin: 10px auto;
-  }
-}
-
 .footer-social {
-  display: flex !important;
-  flex-direction: row !important;
+  display: flex;
+  flex-wrap: wrap;
   align-items: center;
-  justify-content: flex-start;
-  column-gap: 18px !important;
-  row-gap: 0px !important;
+  column-gap: 18px;
   margin-top: 15px;
 }
 
 .footer-social a {
-  display: flex !important;
+  display: flex;
   align-items: center;
   justify-content: center;
   width: 40px;
@@ -927,6 +917,7 @@ h6 {
   font-size: 16px;
   transition: 0.3s;
   border: 1px solid rgba(255, 255, 255, 0.08);
+  text-decoration: none;
 }
 
 .footer-social a:hover {
@@ -934,47 +925,96 @@ h6 {
   transform: translateY(-4px);
 }
 
-/* Mobile Responsive Footer */
-@media (max-width: 768px) {
+/* ✅ FIX: Proper column layout for all screens */
+/* Large screens (desktop) - 3 equal columns */
+@media (min-width: 992px) {
+  .footer-section .row > [class*="col-"] {
+    flex: 0 0 auto;
+    width: 33.333% !important;
+    max-width: 33.333% !important;
+  }
+}
 
+/* Medium screens (tablet) - 2 columns + 1 full width below */
+@media (min-width: 768px) and (max-width: 991px) {
+  .footer-section .row {
+    display: flex;
+    flex-wrap: wrap;
+  }
+  
+  /* First column - 50% */
+  .footer-section .col-lg-4:first-child {
+    flex: 0 0 50% !important;
+    width: 50% !important;
+    max-width: 50% !important;
+  }
+  
+  /* Second column - 50% */
+  .footer-section .col-lg-4:nth-child(2) {
+    flex: 0 0 50% !important;
+    width: 50% !important;
+    max-width: 50% !important;
+  }
+  
+  /* Third column - 100% (full width below) */
+  .footer-section .col-lg-4:last-child {
+    flex: 0 0 100% !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    margin-top: 20px;
+  }
+  
+  /* Center align contact on tablet */
+  .footer-section .col-lg-4:last-child {
+    text-align: center;
+  }
+  
+  .footer-section .col-lg-4:last-child .footer-title::after {
+    margin: 10px auto;
+  }
+}
+
+/* Mobile screens - single column */
+@media (max-width: 767px) {
   .footer-section {
     text-align: center;
   }
-
+  
+  .footer-section .row > [class*="col-"] {
+    flex: 0 0 100% !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    text-align: center;
+  }
+  
   .footer-logo {
     margin: 0 auto;
     display: block;
   }
-
+  
   .footer-social {
     justify-content: center !important;
     margin-top: 20px;
   }
-
+  
   .footer-links {
     padding: 0;
   }
-
+  
   .footer-contact {
     margin-bottom: 8px;
   }
-
+  
   .footer-title::after {
     margin: 10px auto;
   }
-
+  
   .footer-text {
     max-width: 100%;
     margin-left: auto;
     margin-right: auto;
   }
-}
-
-.footer-social {
-  display: flex;
-  flex-wrap: wrap;
-}
-.custom-modal-overlay {
+}.custom-modal-overlay {
   position: fixed;
   inset: 0;
   background: rgba(0, 0, 0, 0.85);
@@ -1542,6 +1582,7 @@ h6 {
 .services-hero .container {
   width: 100% !important;
   max-width: 1200px !important;
+  height: 40vh;
   text-align: center !important;
   padding: 10px 20px !important;
   display: flex !important;
@@ -1691,26 +1732,34 @@ h6 {
     font-size: 0.75rem !important;
   }
 }
-
-/* ✅ EXTRA SMALL MOBILE (320px - 479px) - Text Uper */
+/* ✅ EXTRA SMALL MOBILE (320px - 479px) - VERTICALLY CENTERED */
 @media (max-width: 479px) {
   .services-hero {
-    min-height: auto !important;
+    min-height: 40vh !important; /* ✅ Height increase for centering */
     padding: 5px 0 10px 0 !important;
-    align-items: flex-start !important;
+    display: flex !important;
+    align-items: center !important; /* ✅ Vertical center */
+    justify-content: center !important;
     padding-top: 12px !important;
   }
   
   .services-hero .container {
+    height: 5vh !important; /* ✅ Auto height */
     padding: 3px 10px !important;
-    justify-content: flex-start !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: center !important; /* ✅ Vertical center */
+    align-items: center !important;
     min-height: auto !important;
+    margin: 0 auto !important;
   }
   
   .services-hero h1 {
     font-size: 1.1rem !important;
     line-height: 1.3 !important;
     margin-top: 0 !important;
+    margin-bottom: 4px !important;
+    text-align: center !important;
   }
   
   .services-hero .services-subtitle {
@@ -1718,14 +1767,15 @@ h6 {
     padding: 0 8px !important;
     margin-top: 2px !important;
     margin-bottom: 4px !important;
+    text-align: center !important;
   }
   
   .services-hero .whatsapp-btn {
     padding: 4px 12px !important;
     font-size: 0.65rem !important;
+    margin-top: 10px !important;
   }
 }
-
 /* ✅ Navbar padding - Mobile fix */
 .page-with-navbar {
   padding-top: 80px !important;
@@ -3920,5 +3970,636 @@ img {
   .profile-card-badge,
   .profile-card-subtitle {
     display: block;
+  }
+}
+
+
+/* ============================================================
+   🎯 PROFESSIONAL HEADINGS - GLOBAL STYLING
+   Sabhi pages ki headings consistent aur professional
+   ============================================================ */
+
+/* ---------- BASE HEADING STYLES ---------- */
+.section-heading {
+  font-size: 3rem;
+  font-weight: 800;
+  color: #fff;
+  line-height: 1.2;
+  margin-bottom: 12px;
+}
+
+.section-subheading {
+  font-size: 1.1rem;
+  color: #bdbdbd;
+  max-width: 700px;
+  margin: 0 auto;
+  line-height: 1.7;
+}
+
+/* ---------- GRADIENT UNDERLINE ---------- */
+.heading-underline {
+  position: relative;
+  display: inline-block;
+}
+
+.heading-underline::after {
+  content: "";
+  position: absolute;
+  bottom: -8px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60px;
+  height: 3px;
+  background: linear-gradient(90deg, #3117b9, #7138f4);
+  border-radius: 20px;
+}
+
+.heading-underline-left::after {
+  left: 0;
+  transform: none;
+}
+
+/* ---------- SPECIFIC PAGE HEADINGS ---------- */
+
+/* 🏠 HOME - Trust Section */
+.trust-section h2 {
+  font-size: 3rem;
+  font-weight: 800;
+  color: #fff;
+  line-height: 1.2;
+}
+
+/* 🏠 HOME - Winning Deeds */
+.winning-title {
+  font-size: 3rem;
+  font-weight: 800;
+  color: #fff;
+  line-height: 1.2;
+}
+
+/* 🏠 HOME - Project Section */
+.project-title {
+  font-size: 3rem;
+  font-weight: 800;
+  color: #fff;
+  line-height: 1.2;
+}
+
+/* 📄 ABOUT - About Us */
+.about-main-heading h2 {
+  font-size: 3rem;
+  font-weight: 800;
+  color: #fff;
+  line-height: 1.2;
+}
+
+/* 📄 SERVICES - Main Heading */
+.section-main-heading {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #fff;
+  line-height: 1.2;
+}
+
+/* 📄 SERVICES - Hero Heading */
+.services-hero h1 {
+  font-size: 2.8rem;
+  font-weight: 700;
+  color: #fff;
+  line-height: 1.2;
+}
+
+/* 📄 CASE STUDIES - Hero */
+.case-hero h1 {
+  font-size: 3rem;
+  font-weight: 700;
+  color: #fff;
+  line-height: 1.2;
+}
+
+/* 📄 TRAINING - Program Section */
+.program-section h2 {
+  font-size: 3rem;
+  font-weight: 800;
+  color: #fff;
+  line-height: 1.2;
+}
+
+/* ============================================================
+   📱 MOBILE RESPONSIVE - All Headings
+   ============================================================ */
+
+/* ---------- TABLET (768px - 991px) ---------- */
+@media (max-width: 991px) {
+  .section-heading,
+  .trust-section h2,
+  .winning-title,
+  .project-title,
+  .about-main-heading h2,
+  .program-section h2 {
+    font-size: 2.5rem;
+  }
+
+  .case-hero h1 {
+    font-size: 2.5rem;
+  }
+
+  .services-hero h1 {
+    font-size: 2.3rem;
+  }
+
+  .section-main-heading {
+    font-size: 2.2rem;
+  }
+
+  .section-subheading {
+    font-size: 1rem;
+    padding: 0 15px;
+  }
+}
+
+/* ---------- MOBILE (576px - 767px) ---------- */
+@media (max-width: 767px) {
+  .section-heading,
+  .trust-section h2,
+  .winning-title,
+  .project-title,
+  .about-main-heading h2,
+  .program-section h2 {
+    font-size: 2rem;
+    white-space: normal;  /* 2 lines mein aane do */
+    word-break: break-word;
+  }
+
+  .case-hero h1 {
+    font-size: 2rem;
+    white-space: normal;
+  }
+
+  .services-hero h1 {
+    font-size: 1.8rem;
+    white-space: normal;
+  }
+
+  .section-main-heading {
+    font-size: 1.8rem;
+    white-space: normal;
+  }
+
+  .section-subheading {
+    font-size: 0.95rem;
+    padding: 0 12px;
+  }
+
+  .heading-underline::after {
+    width: 50px;
+    height: 3px;
+  }
+}
+
+/* ---------- SMALL MOBILE (375px - 575px) ---------- */
+@media (max-width: 575px) {
+  .section-heading,
+  .trust-section h2,
+  .winning-title,
+  .project-title,
+  .about-main-heading h2,
+  .program-section h2 {
+    font-size: 1.7rem;
+    white-space: normal;
+    word-break: break-word;
+    padding: 0 10px;
+  }
+
+  .case-hero h1 {
+    font-size: 1.7rem;
+    white-space: normal;
+  }
+
+  .services-hero h1 {
+    font-size: 1.5rem;
+    white-space: normal;
+  }
+
+  .section-main-heading {
+    font-size: 1.5rem;
+    white-space: normal;
+  }
+
+  .section-subheading {
+    font-size: 0.85rem;
+    padding: 0 10px;
+  }
+
+  .heading-underline::after {
+    width: 40px;
+    height: 2px;
+  }
+}
+
+/* ---------- EXTRA SMALL MOBILE (320px - 374px) ---------- */
+@media (max-width: 374px) {
+  .section-heading,
+  .trust-section h2,
+  .winning-title,
+  .project-title,
+  .about-main-heading h2,
+  .program-section h2 {
+    font-size: 1.4rem;
+    white-space: normal;
+    word-break: break-word;
+    padding: 0 8px;
+  }
+
+  .case-hero h1 {
+    font-size: 1.4rem;
+  }
+
+  .services-hero h1 {
+    font-size: 1.2rem;
+  }
+
+  .section-main-heading {
+    font-size: 1.3rem;
+  }
+
+  .section-subheading {
+    font-size: 0.75rem;
+    padding: 0 8px;
+  }
+}
+
+/* ============================================================
+   🎯 TRAINING PROGRAM - SPECIAL MOBILE FIX
+   "Training Programs" heading ko 2 lines mein dikhana hai
+   ============================================================ */
+
+/* Training Program Heading - Mobile par 2 lines */
+@media (max-width: 767px) {
+  .program-section h2 {
+    white-space: normal !important;      /* ❌ Force 2 lines */
+    word-break: break-word !important;   /* ✅ Words break properly */
+    max-width: 100% !important;
+    display: block !important;
+    font-size: 2rem !important;
+    line-height: 1.3 !important;
+    padding: 0 15px !important;
+  }
+}
+
+/* Small mobile par bhi 2 lines */
+@media (max-width: 575px) {
+  .program-section h2 {
+    font-size: 1.7rem !important;
+    white-space: normal !important;
+    word-break: break-word !important;
+    line-height: 1.3 !important;
+    padding: 0 12px !important;
+  }
+}
+
+/* Extra small mobile */
+@media (max-width: 374px) {
+  .program-section h2 {
+    font-size: 1.4rem !important;
+    white-space: normal !important;
+    word-break: break-word !important;
+    line-height: 1.3 !important;
+    padding: 0 8px !important;
+  }
+}
+
+/* ============================================================
+   🎯 SERVICES HERO - SPECIAL MOBILE FIX
+   "Let's Build a Strategy That Fits Your Business & Goals"
+   Mobile par properly show ho
+   ============================================================ */
+
+@media (max-width: 767px) {
+  .services-hero h1 {
+    white-space: normal !important;
+    word-break: break-word !important;
+    line-height: 1.3 !important;
+    font-size: 1.8rem !important;
+    padding: 0 10px !important;
+  }
+}
+
+@media (max-width: 575px) {
+  .services-hero h1 {
+    font-size: 1.5rem !important;
+    white-space: normal !important;
+    word-break: break-word !important;
+    line-height: 1.3 !important;
+    padding: 0 8px !important;
+  }
+  
+  .services-hero h1 br {
+    display: none !important;  /* <br> tags ko hide karein */
+  }
+}
+
+@media (max-width: 374px) {
+  .services-hero h1 {
+    font-size: 1.2rem !important;
+    white-space: normal !important;
+    word-break: break-word !important;
+    line-height: 1.3 !important;
+    padding: 0 6px !important;
+  }
+}
+
+/* ============================================================
+   🎯 CASE STUDIES HERO - SPECIAL MOBILE FIX
+   ============================================================ */
+
+@media (max-width: 767px) {
+  .case-hero h1 {
+    white-space: normal !important;
+    word-break: break-word !important;
+    line-height: 1.3 !important;
+    font-size: 2rem !important;
+  }
+}
+
+@media (max-width: 575px) {
+  .case-hero h1 {
+    font-size: 1.7rem !important;
+    white-space: normal !important;
+    word-break: break-word !important;
+    line-height: 1.3 !important;
+  }
+}
+
+@media (max-width: 374px) {
+  .case-hero h1 {
+    font-size: 1.4rem !important;
+    white-space: normal !important;
+    word-break: break-word !important;
+    line-height: 1.3 !important;
+  }
+}
+
+/* ============================================================
+   🎯 ABOUT US - SPECIAL MOBILE FIX
+   ============================================================ */
+
+@media (max-width: 767px) {
+  .about-main-heading h2 {
+    white-space: normal !important;
+    word-break: break-word !important;
+    line-height: 1.3 !important;
+    font-size: 2rem !important;
+  }
+}
+
+@media (max-width: 575px) {
+  .about-main-heading h2 {
+    font-size: 1.7rem !important;
+    white-space: normal !important;
+    word-break: break-word !important;
+    line-height: 1.3 !important;
+  }
+}
+
+@media (max-width: 374px) {
+  .about-main-heading h2 {
+    font-size: 1.4rem !important;
+    white-space: normal !important;
+    word-break: break-word !important;
+    line-height: 1.3 !important;
+  }
+}
+
+/* ============================================================
+   🎯 HOME - TRUST, WINNING, PROJECT SECTIONS
+   ============================================================ */
+
+@media (max-width: 767px) {
+  .trust-section h2,
+  .winning-title,
+  .project-title {
+    white-space: normal !important;
+    word-break: break-word !important;
+    line-height: 1.3 !important;
+    font-size: 2rem !important;
+    padding: 0 10px !important;
+  }
+}
+
+@media (max-width: 575px) {
+  .trust-section h2,
+  .winning-title,
+  .project-title {
+    font-size: 1.7rem !important;
+    white-space: normal !important;
+    word-break: break-word !important;
+    line-height: 1.3 !important;
+    padding: 0 8px !important;
+  }
+}
+
+@media (max-width: 374px) {
+  .trust-section h2,
+  .winning-title,
+  .project-title {
+    font-size: 1.4rem !important;
+    white-space: normal !important;
+    word-break: break-word !important;
+    line-height: 1.3 !important;
+    padding: 0 6px !important;
+  }
+}
+
+/* ============================================================
+   🎯 SECTION SUBTEXT (Descriptions) - Mobile
+   ============================================================ */
+
+@media (max-width: 767px) {
+  .section-subheading,
+  .trust-section p,
+  .winning-desc,
+  .project-text,
+  .about-main-heading p,
+  .program-section p,
+  .services-hero .services-subtitle,
+  .case-hero p {
+    font-size: 0.95rem !important;
+    padding: 0 12px !important;
+    line-height: 1.7 !important;
+    max-width: 100% !important;
+  }
+}
+
+@media (max-width: 575px) {
+  .section-subheading,
+  .trust-section p,
+  .winning-desc,
+  .project-text,
+  .about-main-heading p,
+  .program-section p,
+  .services-hero .services-subtitle,
+  .case-hero p {
+    font-size: 0.85rem !important;
+    padding: 0 10px !important;
+    line-height: 1.6 !important;
+  }
+}
+
+@media (max-width: 374px) {
+  .section-subheading,
+  .trust-section p,
+  .winning-desc,
+  .project-text,
+  .about-main-heading p,
+  .program-section p,
+  .services-hero .services-subtitle,
+  .case-hero p {
+    font-size: 0.75rem !important;
+    padding: 0 8px !important;
+    line-height: 1.5 !important;
+  }
+}
+/* ============================================================
+   PROJECT SECTION - WITH HERO IMAGE BACKGROUND + BRIGHTNESS
+   ============================================================ */
+
+.project-section-with-bg {
+  position: relative;
+  overflow: hidden;
+  padding: 100px 20px;
+  min-height: 450px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #0a0a1a;
+}
+
+/* LQIP Placeholder */
+.project-bg-placeholder {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  filter: blur(12px) saturate(1.1);
+  transform: scale(1.05);
+  transition: opacity 0.4s ease;
+  opacity: 1;
+}
+
+/* ✅ Full Resolution Image - WITH BRIGHTNESS */
+.project-bg-image {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  opacity: 0;
+  transition: opacity 0.9s ease;
+  /* ✅ Brightness effect - hero jaisa */
+  filter: brightness(1.1) saturate(1.05);
+}
+
+.project-bg-image.loaded {
+  opacity: 1;
+}
+
+/* ✅ Dark Overlay - Hero jaisa light overlay */
+.project-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  /* ✅ Hero jaisa gradient - thora light */
+  background: linear-gradient(180deg,
+      rgba(0, 0, 0, 0.5) 0%,
+      rgba(15, 23, 42, 0.3) 40%,
+      rgba(0, 0, 0, 0.6) 100%
+  );
+}
+
+/* ✅ Agar aapko aur bright chahiye toh yeh use karein */
+.project-overlay-bright {
+  background: linear-gradient(180deg,
+      rgba(0, 0, 0, 0.3) 0%,
+      rgba(15, 23, 42, 0.2) 40%,
+      rgba(0, 0, 0, 0.5) 100%
+  );
+}
+
+/* Content */
+.project-section-with-bg .container {
+  position: relative;
+  z-index: 3;
+}
+
+.project-section-with-bg .project-title {
+  color: #fff;
+  text-shadow: 0 2px 20px rgba(0, 0, 0, 0.5);
+}
+
+.project-section-with-bg .project-text {
+  color: rgba(255, 255, 255, 0.9);
+  text-shadow: 0 1px 10px rgba(0, 0, 0, 0.3);
+}
+
+/* Loading Animation */
+@keyframes bgPulse {
+  0%, 100% {
+    opacity: 0.5;
+  }
+  50% {
+    opacity: 0.9;
+  }
+}
+
+.project-bg-placeholder.loading {
+  animation: bgPulse 1.8s ease-in-out infinite;
+}
+
+/* 📱 Tablet */
+@media (max-width: 991px) {
+  .project-section-with-bg {
+    padding: 80px 15px;
+    min-height: 380px;
+  }
+}
+
+/* 📱 Mobile */
+@media (max-width: 768px) {
+  .project-section-with-bg {
+    padding: 70px 15px;
+    min-height: 340px;
+  }
+}
+
+/* 📱 Small Mobile */
+@media (max-width: 576px) {
+  .project-section-with-bg {
+    padding: 60px 12px;
+    min-height: 300px;
+  }
+  .project-section-with-bg .project-title {
+    font-size: 1.7rem !important;
+  }
+  .project-section-with-bg .project-text {
+    font-size: 0.9rem !important;
+    padding: 0 5px;
+  }
+}
+
+/* 📱 Extra Small Mobile */
+@media (max-width: 375px) {
+  .project-section-with-bg {
+    padding: 50px 10px;
+    min-height: 270px;
+  }
+  .project-section-with-bg .project-title {
+    font-size: 1.4rem !important;
+  }
+  .project-section-with-bg .project-text {
+    font-size: 0.8rem !important;
   }
 }

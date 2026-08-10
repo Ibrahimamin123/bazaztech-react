@@ -30,6 +30,10 @@ import FounderVideoModal from "../components/FounderVideoModal";
 const HERO_LQIP =
   "data:image/webp;base64,UklGRmwAAABXRUJQVlA4IGAAAACwAwCdASogABIAPuVgpU2pJaOiN/VYASAciWQAtvqAAnZZ+r34wAD+8LZr3gWykdK/ZrZ5YvGMosxkUR3TfPPf9QbfPXSAc7SHxtFvqbQcSWQxENSCYTk9BaJOqenAgAA=";
 
+// ✅ PROJECT LQIP - Simple placeholder for project section
+const PROJECT_LQIP =
+  "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1200' height='400' viewBox='0 0 1200 400'%3E%3Crect width='1200' height='400' fill='%23111827'/%3E%3C/svg%3E";
+
 // ✅ EMPTY ARRAY - No fallback cards (static cards hatao)
 const fallbackStatsCards = [];
 const fallbackFooterCards = [];
@@ -41,19 +45,26 @@ const Home = () => {
   const [footerLoading, setFooterLoading] = useState(true);
   const [showFounderVideo, setShowFounderVideo] = useState(false);
   const [heroLoaded, setHeroLoaded] = useState(false);
+  const [projectBgLoaded, setProjectBgLoaded] = useState(false); // ✅ NEW
   const heroLine1Ref = useRef(null);
   const heroLine2Ref = useRef(null);
   const { founderVideoUrl, youtubeChannelUrl } = useWebsiteSettings();
 
-  // Preload the full-resolution hero image in the background. The section
-  // paints immediately with the inlined LQIP placeholder above, then
-  // crossfades to the sharp image the instant it's ready.
+  // ✅ Preload both Hero and Project background images (same image)
   useEffect(() => {
+    // Hero image preload
     const img = new Image();
     if ("fetchPriority" in img) img.fetchPriority = "high";
     img.onload = () => setHeroLoaded(true);
     img.src = heroImg;
     if (img.complete) setHeroLoaded(true);
+
+    // ✅ Project background - same hero image
+    const projectImg = new Image();
+    if ("fetchPriority" in projectImg) projectImg.fetchPriority = "high";
+    projectImg.onload = () => setProjectBgLoaded(true);
+    projectImg.src = heroImg;
+    if (projectImg.complete) setProjectBgLoaded(true);
   }, []);
 
   const fallbackTrustedLogos = [
@@ -181,6 +192,10 @@ const Home = () => {
   return (
     <>
       <Navbar />
+      
+      {/* ============================================================
+          HERO SECTION - With LQIP Loading
+          ============================================================ */}
       <motion.section
         className="hero text-white d-flex align-items-center position-relative"
         style={{
@@ -340,6 +355,9 @@ const Home = () => {
 
       <Chatbot />
 
+      {/* ============================================================
+          TRUST SECTION
+          ============================================================ */}
       <section className="trust-section py-5 text-white">
         <div className="container text-center">
           <h2>Trusted by Happy Customers</h2>
@@ -389,8 +407,27 @@ const Home = () => {
         </div>
       </section>
 
-      <section className="project-section">
-        <div className="container">
+      {/* ============================================================
+          PROJECT SECTION - With Hero Image Background + LQIP Loading
+          ============================================================ */}
+      <section className="project-section project-section-with-bg">
+        {/* ✅ LQIP Placeholder - Instantly visible */}
+        <div
+          className="project-bg-placeholder"
+          style={{ backgroundImage: `url(${PROJECT_LQIP})` }}
+        />
+
+        {/* ✅ Full Resolution Image - Fades in when loaded (using hero image) */}
+        <div
+          className={`project-bg-image ${projectBgLoaded ? 'loaded' : ''}`}
+          style={{ backgroundImage: `url(${heroImg})` }}
+        />
+
+        {/* ✅ Dark Overlay for readability */}
+        <div className="project-overlay" />
+
+        {/* ✅ Content */}
+        <div className="container position-relative" style={{ zIndex: 3 }}>
           <div className="row justify-content-center text-center">
             <div className="col-lg-8">
               <h2 className="project-title">Start a Project</h2>
@@ -406,7 +443,9 @@ const Home = () => {
         </div>
       </section>
 
-      {/* ✅ WINNING DEEDS - Only show when loading is done AND cards exist */}
+      {/* ============================================================
+          WINNING DEEDS - Only show when loading is done AND cards exist
+          ============================================================ */}
       {!footerLoading && footerCards.length > 0 && (
         <section className="winning-section">
           <div className="container">

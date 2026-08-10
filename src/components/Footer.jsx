@@ -34,70 +34,70 @@ const Footer = () => {
   }, []);
 
   return (
-    <footer className="footer-section">
-      <div className="container">
-        {/* ✅ 3 Equal Columns - Desktop */}
-        <div className="row gy-4" style={{ display: 'flex', flexWrap: 'wrap' }}>
-          
-          {/* Column 1 - Logo & About */}
-          <div className="col-lg-4 col-md-6" style={{ flex: '1 1 0', minWidth: '200px' }}>
-            {settings?.logo ? (
-              <img src={resolveImageSrc(settings.logo)} className="footer-logo" alt="logo" />
-            ) : (
-              <h4 className="footer-brand">{settings?.siteName || "BazazTech"}</h4>
-            )}
+   <footer className="footer-section">
+  <div className="container">
+    {/* ✅ Remove inline styles - let CSS handle everything */}
+    <div className="row gy-4">
+      
+      {/* Column 1 - Logo & About */}
+      <div className="col-lg-4 col-md-6">
+        {settings?.logo ? (
+          <img src={resolveImageSrc(settings.logo)} className="footer-logo" alt="logo" />
+        ) : (
+          <h4 className="footer-brand">{settings?.siteName || "BazazTech"}</h4>
+        )}
 
-            <p className="footer-text mt-3">
-              {settings?.footerText ||
-                "Bazaz Tech is a creative digital agency providing modern web development and business solutions."}
-            </p>
+        <p className="footer-text mt-3">
+          {settings?.footerText ||
+            "Bazaz Tech is a creative digital agency providing modern web development and business solutions."}
+        </p>
 
-            <div className="footer-social">
-              {socialLinks.map((link) => {
-                const Icon = iconMap[link.platform?.toLowerCase()] || FaLinkedinIn;
-                return (
-                  <a
-                    key={link._id}
-                    href={link.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    <Icon />
-                  </a>
-                );
-              })}
-            </div>
-          </div>
-
-          {/* Column 2 - Quick Links */}
-          <div className="col-lg-4 col-md-6" style={{ flex: '1 1 0', minWidth: '150px' }}>
-            <h5 className="footer-title">Quick Links</h5>
-            <ul className="footer-links">
-              <li><Link to="/about">About</Link></li>
-              <li><Link to="/services">Services</Link></li>
-              <li><Link to="/casestudies">Case Studies</Link></li>
-              <li><Link to="/corporatetraining">Training</Link></li>
-            </ul>
-          </div>
-
-          {/* Column 3 - Contact */}
-          <div className="col-lg-4 col-md-6" style={{ flex: '1 1 0', minWidth: '200px' }}>
-            <h5 className="footer-title">Contact</h5>
-            <p className="footer-contact">📧 {settings?.email || "info@bazaztech.com"}</p>
-            <p className="footer-contact">📞 {settings?.phone || "+92 327 8445721"}</p>
-            <p className="footer-contact">
-              📍 {settings?.address || "Karachi, Pakistan"}
-            </p>
-          </div>
-        </div>
-
-        <hr className="footer-divider" />
-
-        <div className="text-center footer-bottom">
-          {settings?.copyright || "© 2026 Bazaz Tech. All Rights Reserved."}
+        <div className="footer-social">
+          {socialLinks.map((link) => {
+            const Icon = iconMap[link.platform?.toLowerCase()] || FaLinkedinIn;
+            return (
+              <a
+                key={link._id}
+                href={link.url}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <Icon />
+              </a>
+            );
+          })}
         </div>
       </div>
-    </footer>
+
+      {/* Column 2 - Quick Links */}
+      <div className="col-lg-4 col-md-6">
+        <h5 className="footer-title">Quick Links</h5>
+        <ul className="footer-links">
+          <li><Link to="/about">About</Link></li>
+          <li><Link to="/services">Services</Link></li>
+          <li><Link to="/casestudies">Case Studies</Link></li>
+          <li><Link to="/corporatetraining">Training</Link></li>
+        </ul>
+      </div>
+
+      {/* Column 3 - Contact */}
+      <div className="col-lg-4 col-md-6">
+        <h5 className="footer-title">Contact</h5>
+        <p className="footer-contact">📧 {settings?.email || "info@bazaztech.com"}</p>
+        <p className="footer-contact">📞 {settings?.phone || "+92 327 8445721"}</p>
+        <p className="footer-contact">
+          📍 {settings?.address || "Karachi, Pakistan"}
+        </p>
+      </div>
+    </div>
+
+    <hr className="footer-divider" />
+
+    <div className="text-center footer-bottom">
+      {settings?.copyright || "© 2026 Bazaz Tech. All Rights Reserved."}
+    </div>
+  </div>
+</footer>
   );
 };
 
